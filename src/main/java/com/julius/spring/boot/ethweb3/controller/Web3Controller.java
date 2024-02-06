@@ -1,9 +1,13 @@
 package com.julius.spring.boot.ethweb3.controller;
 
+import com.julius.spring.boot.ethweb3.service.TransferRequest;
 import com.julius.spring.boot.ethweb3.service.Web3Service;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -36,4 +40,8 @@ public class Web3Controller {
     public BigInteger getEthTransactionCount(@PathVariable("address") String address){
         return web3Service.getTransactionCount(address).getTransactionCount();
     }
-}
+
+    @PostMapping(path = "/api/eth/send")
+    public String sendEth(@RequestBody @NotNull TransferRequest transferRequest){
+        return web3Service.sendTransaction(transferRequest);
+    }}
