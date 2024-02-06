@@ -31,4 +31,9 @@ public class Web3Controller {
     public BigInteger getEthBalance(@PathVariable("address") String address){
         return web3Service.getEthBalance(address).getBalance();
     }
+
+    @GetMapping(path = "/api/eth/trxCount/{address}")
+    public BigInteger getEthTransactionCount(@PathVariable("address") String address){
+        return web3Service.getTransactionCount(address).getTransactionCount();
+    }
 }

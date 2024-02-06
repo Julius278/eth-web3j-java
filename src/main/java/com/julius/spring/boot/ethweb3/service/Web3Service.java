@@ -1,7 +1,6 @@
 package com.julius.spring.boot.ethweb3.service;
 
 import com.julius.spring.boot.ethweb3.config.Web3Config;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterName;
@@ -17,12 +16,9 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class Web3Service {
 
-    private Web3j web3c;
-
-    private final Web3Config web3Config;
+    private final Web3j web3c;
 
     public Web3Service(Web3Config web3Config){
-        this.web3Config = web3Config;
         web3c = Web3j.build(new HttpService(web3Config.getEthServerAddress()));
     }
 
