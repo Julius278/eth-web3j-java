@@ -9,8 +9,12 @@ To be correct, you connect to a ethereum (main or test net) node and get the inf
 ```
 # Usage
 
+## keyfile
+the given keyfile.json (/src/main/resources/) is a newly generated wallet with some SEPOLIA testnet eth.
+If you test with this application, you can test with this wallet or create / include your own.
+
 ## api development / testing software
-tools like Postman or Insomnia are
+tools like Postman or Insomnia are great for testing REST endpoints.
 
 ## cURL
 example for the blockNumber endpoint:

@@ -56,6 +56,8 @@ public class Web3Controller {
      *
      * just for testing purpose
      *
+     * TODO change transferRequest and dont use privateKey anymore, replace by given credentials (keyfile.json)
+     *
      * @param transferRequest
      * @return
      */
