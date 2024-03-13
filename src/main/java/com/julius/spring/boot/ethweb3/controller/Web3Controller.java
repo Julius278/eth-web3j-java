@@ -1,5 +1,6 @@
 package com.julius.spring.boot.ethweb3.controller;
 
+import com.julius.spring.boot.ethweb3.service.ContractService;
 import com.julius.spring.boot.ethweb3.service.TransferRequest;
 import com.julius.spring.boot.ethweb3.service.Web3Service;
 import jakarta.validation.constraints.NotNull;
@@ -19,9 +20,11 @@ public class Web3Controller {
 
     private static final Logger logger = LoggerFactory.getLogger(Web3Controller.class);
     private final Web3Service web3Service;
+    private final ContractService contractService;
 
-    public Web3Controller(Web3Service web3Service) {
+    public Web3Controller(Web3Service web3Service, ContractService contractService) {
         this.web3Service = web3Service;
+        this.contractService = contractService;
     }
 
     @GetMapping(path = {"/api/eth/blockNumber", "/api/eth/BlockNumber"})
@@ -60,5 +63,10 @@ public class Web3Controller {
     public String sendEth(@RequestBody @NotNull TransferRequest transferRequest){
         logger.info("called sendEth with: {}", transferRequest);
         return web3Service.sendTransaction(transferRequest);
+    }
+
+    @GetMapping(path = "/api/eth/contract/deploy")
+    public BigInteger getValueFromContract(){
+        return contractService.deployContractAndCallValue();
     }
 }

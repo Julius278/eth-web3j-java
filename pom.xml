@@ -13,9 +13,13 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>eth-web3</name>
 	<description>Demo project for Spring Boot &amp; web3j</description>
+
 	<properties>
 		<java.version>17</java.version>
+		<web3j-maven-plugin.version>4.10.3</web3j-maven-plugin.version>
+		<web3j-core.version>4.10.3</web3j-core.version>
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -47,7 +51,7 @@
 		<dependency>
 			<groupId>org.web3j</groupId>
 			<artifactId>core</artifactId>
-			<version>4.10.3</version>
+			<version>${web3j-core.version}</version>
 		</dependency>
 
 		<dependency>
@@ -71,6 +75,59 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
+			<!-- added for Solidity java wrapper classes -->
+
+			<plugin>
+				<groupId>org.web3j</groupId>
+				<artifactId>web3j-maven-plugin</artifactId>
+				<version>${web3j-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>generate-sources-web3j</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>generate-sources</goal>
+						</goals>
+						<configuration>
+							<packageName>com.julius.spring.boot.ethweb3</packageName>
+							<sourceDestination>${basedir}/target/generated-sources/contracts</sourceDestination>
+							<abiSourceFiles>
+								<directory>${basedir}/src/main/resources/abi</directory>
+								<includes>
+									<include>**/*.json</include>
+								</includes>
+							</abiSourceFiles>
+							<soliditySourceFiles>
+								<directory>${basedir}/src/main/resources/contracts</directory>
+								<includes>
+									<include>**/*.sol</include>
+								</includes>
+							</soliditySourceFiles>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>add-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${basedir}/target/generated-sources/contracts</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 
