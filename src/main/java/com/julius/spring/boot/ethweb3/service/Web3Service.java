@@ -1,6 +1,5 @@
 package com.julius.spring.boot.ethweb3.service;
 
-import com.julius.spring.boot.ethweb3.config.Web3Config;
 import org.springframework.stereotype.Service;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
@@ -10,7 +9,6 @@ import org.web3j.protocol.core.methods.response.EthBlockNumber;
 import org.web3j.protocol.core.methods.response.EthGetBalance;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
-import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.Transfer;
 import org.web3j.tx.gas.DefaultGasProvider;
 import org.web3j.utils.Convert;
@@ -25,8 +23,8 @@ public class Web3Service {
 
     private final Web3j web3c;
 
-    public Web3Service(Web3Config web3Config) {
-        web3c = Web3j.build(new HttpService(web3Config.getEthServerAddress()));
+    public Web3Service(Web3j web3c) {
+        this.web3c = web3c;
     }
 
     public EthBlockNumber getEthBlockNumber() {
