@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
 
+@SuppressWarnings("java:S125")
 @Getter
 @Configuration
 public class Web3Config {
@@ -34,8 +35,8 @@ public class Web3Config {
     @Value("${web3.keyfile.password}")
     private String keyFilePassword;
 
-    BigInteger GAS_LIMIT = BigInteger.valueOf(9_000_000);
-    BigInteger GAS_PRICE = BigInteger.valueOf(4_100_000_000L);
+    private static final BigInteger GAS_LIMIT = BigInteger.valueOf(9_000_000);
+    private static final BigInteger GAS_PRICE = BigInteger.valueOf(4_100_000_000L);
 
     @Bean
     public ContractGasProvider staticGasProvider() {
