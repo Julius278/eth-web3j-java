@@ -5,8 +5,8 @@ contract Property {
 
     int public value;
 
-    constructor(){
-        value = 4;
+    constructor(int _value){
+        value = _value;
     }
 
     function setValue(int _value) public{

@@ -1,7 +1,6 @@
 package com.julius.spring.boot.ethweb3.config;
 
 import lombok.Getter;
-import lombok.val;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,7 +12,8 @@ import org.web3j.crypto.WalletUtils;
 import org.web3j.crypto.exception.CipherException;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.http.HttpService;
-import org.web3j.tx.gas.StaticGasProvider;
+import org.web3j.tx.gas.ContractGasProvider;
+import org.web3j.tx.gas.DefaultGasProvider;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,9 +34,14 @@ public class Web3Config {
     @Value("${web3.keyfile.password}")
     private String keyFilePassword;
 
+    BigInteger GAS_LIMIT = BigInteger.valueOf(9_000_000);
+    BigInteger GAS_PRICE = BigInteger.valueOf(4_100_000_000L);
+
     @Bean
-    public StaticGasProvider staticGasProvider() {
-        return new StaticGasProvider(BigInteger.valueOf(1L), BigInteger.valueOf(100_000_000_000L));
+    public ContractGasProvider staticGasProvider() {
+        //return new StaticGasProvider(BigInteger.valueOf(1L), BigInteger.valueOf(60_000L));
+        //return new StaticGasProvider(GAS_PRICE, GAS_LIMIT);
+        return new DefaultGasProvider();
     }
 
     @Bean
