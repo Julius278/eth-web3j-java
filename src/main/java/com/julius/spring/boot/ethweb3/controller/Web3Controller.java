@@ -71,4 +71,14 @@ public class Web3Controller {
     public BigInteger getValueFromContract(){
         return contractService.deployContractAndCallValue();
     }
+
+    @GetMapping(path = "/api/eth/propertySafe/deploy")
+    public String deploySafe(){
+        return contractService.deployPropertySafe();
+    }
+
+    @PostMapping(path = "/api/eth/propertySafe/property/{propertyId}")
+    public String deploySafe(@PathVariable("propertyId") String propertyId){
+        return contractService.addPropertyToPropertySafe(propertyId);
+    }
 }

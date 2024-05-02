@@ -1,5 +1,6 @@
 package com.julius.spring.boot.ethweb3.config;
 
+import com.julius.spring.boot.ethweb3.PropertySafe;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,8 @@ import org.web3j.crypto.WalletUtils;
 import org.web3j.crypto.exception.CipherException;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.RawTransactionManager;
+import org.web3j.tx.TransactionManager;
 import org.web3j.tx.gas.ContractGasProvider;
 import org.web3j.tx.gas.DefaultGasProvider;
 
@@ -34,6 +37,9 @@ public class Web3Config {
 
     @Value("${web3.keyfile.password}")
     private String keyFilePassword;
+
+    @Value("${web3.propertySafe.address}")
+    private String propertySafeAddress;
 
     private static final BigInteger GAS_LIMIT = BigInteger.valueOf(9_000_000);
     private static final BigInteger GAS_PRICE = BigInteger.valueOf(4_100_000_000L);
@@ -62,6 +68,22 @@ public class Web3Config {
             logger.error("Failed to load credentials", e);
         }
         return credentials;
+    }
+
+    @Bean
+    public TransactionManager transactionManager(Web3j web3client, Credentials credentials) {
+		try {
+			return new RawTransactionManager(web3client, credentials, Long.parseLong(web3client.netVersion().send().getNetVersion()));
+		} catch (IOException e) {
+            logger.error("transactionManager initiate failed", e);
+			throw new RuntimeException("could not initiate transactionManager");
+		}
+	}
+
+    @Bean
+    public PropertySafe propertySafe(Web3j web3j, TransactionManager transactionManager, ContractGasProvider gasProvider){
+        logger.info("load propertySafe from address: {}", propertySafeAddress);
+        return PropertySafe.load(propertySafeAddress, web3j, transactionManager, gasProvider);
     }
 
 }
