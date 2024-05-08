@@ -20,7 +20,6 @@ import org.web3j.tx.gas.DefaultGasProvider;
 
 import java.io.File;
 import java.io.IOException;
-import java.math.BigInteger;
 
 @SuppressWarnings("java:S125")
 @Getter
@@ -41,18 +40,15 @@ public class Web3Config {
     @Value("${web3.propertySafe.address}")
     private String propertySafeAddress;
 
-    private static final BigInteger GAS_LIMIT = BigInteger.valueOf(9_000_000);
-    private static final BigInteger GAS_PRICE = BigInteger.valueOf(4_100_000_000L);
 
     @Bean
     public ContractGasProvider staticGasProvider() {
-        //return new StaticGasProvider(BigInteger.valueOf(1L), BigInteger.valueOf(60_000L));
-        //return new StaticGasProvider(GAS_PRICE, GAS_LIMIT);
         return new DefaultGasProvider();
     }
 
     @Bean
     public Web3j web3jClient() {
+        logger.info("eth node = {}", ethServerAddress);
         return Web3j.build(new HttpService(ethServerAddress));
     }
 

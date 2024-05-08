@@ -17,7 +17,6 @@ import org.web3j.tx.gas.DefaultGasProvider;
 import org.web3j.utils.Convert;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.util.concurrent.Future;
 
 import static java.lang.String.format;
@@ -29,10 +28,12 @@ public class Web3Service {
     private static final Logger logger = LoggerFactory.getLogger(Web3Service.class);
 
     private final Web3j web3c;
+    private final Credentials credentials;
 
-    public Web3Service(Web3j web3c) {
+    public Web3Service(Web3j web3c, Credentials credentials) {
         this.web3c = web3c;
-    }
+		this.credentials = credentials;
+	}
 
     public EthBlockNumber getEthBlockNumber() {
         EthBlockNumber result;
@@ -84,14 +85,17 @@ public class Web3Service {
         try {
             Future<TransactionReceipt> future = Transfer.sendFundsEIP1559(
                     web3c,
-                    Credentials.create(transferRequest.getPrivateKey()),
+                    credentials,
                     transferRequest.getRecipient(),
                     transferRequest.getAmountInEth(),
                     Convert.Unit.ETHER,
-                    BigInteger.valueOf(8_000_000L), //gaslimit
+                    //BigInteger.valueOf(8_000_000L), //gaslimit
                     DefaultGasProvider.GAS_LIMIT,
-                    BigInteger.valueOf(3_100_000_000L) //maxFeePerGas
+                    DefaultGasProvider.GAS_LIMIT,
+                    //BigInteger.valueOf(3_100_000_000L) //maxFeePerGas
+                    DefaultGasProvider.GAS_PRICE
             ).sendAsync();
+
             System.out.print("transaction sent..");
             while(!future.isDone()){
                 Thread.sleep(1500);

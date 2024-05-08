@@ -52,14 +52,6 @@ public class Web3Controller {
         return web3Service.getTransactionCount(address).getTransactionCount();
     }
 
-    /**
-     * hopefully no one would ever use that with a real private key
-     * just for testing purpose
-     * TODO change transferRequest and dont use privateKey anymore, replace by given credentials (keyfile.json)
-     *
-     * @param transferRequest
-     * @return
-     */
     @PostMapping(path = "/api/eth/send")
     public String sendEth(@RequestBody @NotNull TransferRequest transferRequest){
         logger.info("called sendEth with: {}", transferRequest);
@@ -81,6 +73,7 @@ public class Web3Controller {
         return contractService.addPropertyToPropertySafe(propertyId);
     }
 
+    @SuppressWarnings("java:S3740")
     @GetMapping(
         path = "/api/eth/propertySafe/properties",
         produces = MediaType.APPLICATION_JSON_VALUE)

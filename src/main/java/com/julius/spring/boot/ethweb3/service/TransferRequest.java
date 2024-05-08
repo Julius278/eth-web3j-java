@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 @Setter
 @ToString
 public class TransferRequest {
-    private String privateKey;
     private String recipient;
     private BigDecimal amountInEth;
 }
