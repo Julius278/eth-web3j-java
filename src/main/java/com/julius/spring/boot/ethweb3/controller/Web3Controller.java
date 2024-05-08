@@ -6,6 +6,7 @@ import com.julius.spring.boot.ethweb3.service.Web3Service;
 import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,9 +54,7 @@ public class Web3Controller {
 
     /**
      * hopefully no one would ever use that with a real private key
-     *
      * just for testing purpose
-     *
      * TODO change transferRequest and dont use privateKey anymore, replace by given credentials (keyfile.json)
      *
      * @param transferRequest
@@ -78,7 +77,14 @@ public class Web3Controller {
     }
 
     @PostMapping(path = "/api/eth/propertySafe/property/{propertyId}")
-    public String deploySafe(@PathVariable("propertyId") String propertyId){
+    public String addPropertyToPropertySafe(@PathVariable("propertyId") String propertyId){
         return contractService.addPropertyToPropertySafe(propertyId);
+    }
+
+    @GetMapping(
+        path = "/api/eth/propertySafe/properties",
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    public List fetchProperties(){
+        return contractService.getProperties();
     }
 }

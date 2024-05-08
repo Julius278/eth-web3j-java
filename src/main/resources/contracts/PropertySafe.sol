@@ -29,4 +29,12 @@ contract PropertySafe {
         return propertyMap[_externalPropertyId];
     }
 
+    function getProperties() external view returns(address[] memory) {
+        return propertyAddresses;
+    }
+
+    function getPropertyAmount() external view returns(uint256) {
+        return propertyAddresses.length;
+    }
+
 }

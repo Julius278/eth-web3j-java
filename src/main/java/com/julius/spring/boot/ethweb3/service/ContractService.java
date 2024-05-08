@@ -12,6 +12,7 @@ import org.web3j.tx.exceptions.ContractCallException;
 import org.web3j.tx.gas.ContractGasProvider;
 
 import java.math.BigInteger;
+import java.util.List;
 
 @SuppressWarnings("java:S2629")
 @Service
@@ -78,4 +79,13 @@ public class ContractService {
 			throw new RuntimeException(e);
 		}
 	}
+
+    public List getProperties() {
+        try {
+            logger.info("try to get a list of properties");
+            return propertySafe.getProperties().sendAsync().get();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
