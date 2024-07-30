@@ -43,7 +43,7 @@ More details in the pom.xml
 
 # Usage
 ## keyfile
-the given keyfile.json (/src/main/resources/) is a newly generated wallet with some SEPOLIA testnet eth.
+the given keyfile.json (/src/main/resources/) is a newly generated wallet with some SEPOLIA or Holesky testnet eth.
 If you test with this application, you can test with this wallet or create / include your own.
 
 ## api development / testing software
