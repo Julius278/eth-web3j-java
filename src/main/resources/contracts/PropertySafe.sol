@@ -25,6 +25,13 @@ contract PropertySafe {
         propertyMap[_externalPropertyId] = propertyAddress;
     }
 
+    function addProperty(string memory _externalPropertyId, address _propertyAddress) external {
+        require(propertyMap[_externalPropertyId] == address(0), "externalPropertyId already in use");
+
+        propertyAddresses.push(_propertyAddress);
+        propertyMap[_externalPropertyId] = _propertyAddress;
+    }
+
     function getPropertyById(string memory _externalPropertyId) external view returns(address){
         return propertyMap[_externalPropertyId];
     }

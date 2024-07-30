@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
-contract Property {
+import {IProperty} from "./IProperty.sol";
+
+contract Property is IProperty {
 
     string internal id;
     int public value;
@@ -14,8 +16,16 @@ contract Property {
         value = _value;
     }
 
+    function getValue() public returns (int) {
+        return value;
+    }
+
     function setPropertyId(string memory _propertyId) public{
         id = _propertyId;
+    }
+
+    function getPropertyId() external returns (string memory){
+        return id;
     }
 
 }
