@@ -1,3 +1,5 @@
+On the bottom of the README there are some challenges to get into the topic. Have fun!
+
 # General Web3J information
 The application takes advantage of the [Web3J library](https://github.com/web3j/web3j) to communicate with the ethereum blockchain.
 To be correct, you connect to a ethereum (main or test net) node via [JSON-RPC](https://www.jsonrpc.org/) connection and retrieve the information this specific node/chain provides.
@@ -68,3 +70,16 @@ You can also override the node by defining it via environment variables (`ETH_NO
 
 
 As this is just a showcase / fun project / poc / whatever, there are no special profiles for main or test net.
+
+
+# Challenges to get into the topic
+## Challenge 1
+* Git clone project (https://github.com/Julius278/eth-web3j)
+* (if you have a GitHub account and are familiar with the platform, you can also fork and clone your own repository)
+* Build (mvn clean install) the Java project on the project root directory
+  * alternatively you can use the maven plugin of your IDE, here is an example for Intellij
+![intellij_maven_plugin.png](docs/intellij_maven_plugin.png)
+* it should show a _BUILD SUCCESS_ message
+![img.png](docs/maven_build_success.png)
+
+## Challenge 2
