@@ -16,7 +16,7 @@ contract Property is IProperty {
         value = _value;
     }
 
-    function getValue() public returns (int) {
+    function getValue() public view returns (int) {
         return value;
     }
 
@@ -24,7 +24,7 @@ contract Property is IProperty {
         id = _propertyId;
     }
 
-    function getPropertyId() external returns (string memory){
+    function getPropertyId() public view returns (string memory){
         return id;
     }
 
