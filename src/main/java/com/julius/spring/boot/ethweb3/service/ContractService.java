@@ -53,26 +53,11 @@ public class ContractService {
         }
     }
 
-    /**
-     *
-     * @return contract value
-     */
-    public String deployPropertySafe() {
-        try {
-            PropertySafe deployedPropertySafe = PropertySafe.deploy(web3client, manager, gasProvider).send();
-
-            return deployedPropertySafe.getContractAddress();
-        } catch (Exception e) {
-            logger.error("failed to deploy Property contract");
-            throw new ContractCallException("failed to deploy Property contract, " + e);
-        }
-    }
-
     public String addPropertyToPropertySafe(String propertyId) {
         BigInteger standardValue = BigInteger.valueOf(200L);
 		try {
             logger.info("try to create new property by id: {}", propertyId);
-			propertySafe.createProperty(propertyId, standardValue).sendAsync().get();
+			propertySafe.createProperty(propertyId, standardValue).send();
             logger.info("created new property");
             return propertySafe.getPropertyById(propertyId).send();
 		} catch (Exception e) {
