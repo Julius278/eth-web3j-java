@@ -67,7 +67,6 @@ class PropertySafeServiceTest {
 			when(getValueCall.send()).thenReturn(BigInteger.valueOf(propertyValue));
 
 			//then
-
 			assertEquals(BigInteger.valueOf(propertyValue), propertySafeService.deployPropertyToSafe(externalPropertyId, propertyValue));
 		}
 
