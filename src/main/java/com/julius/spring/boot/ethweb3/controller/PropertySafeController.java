@@ -29,4 +29,6 @@ public class PropertySafeController {
         logger.info("addPropertyToPropertySafe");
         return propertySafeService.deployPropertyToSafe(propertyId, propertyValue);
     }
+
+    //TODO add an endpoint which returns all properties with their ids
 }
