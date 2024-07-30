@@ -1,5 +1,6 @@
 package com.julius.spring.boot.ethweb3.service;
 
+import com.julius.spring.boot.ethweb3.model.TransferRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

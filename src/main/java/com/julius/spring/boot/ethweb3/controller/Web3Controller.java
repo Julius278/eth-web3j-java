@@ -1,7 +1,7 @@
 package com.julius.spring.boot.ethweb3.controller;
 
 import com.julius.spring.boot.ethweb3.service.ContractService;
-import com.julius.spring.boot.ethweb3.service.TransferRequest;
+import com.julius.spring.boot.ethweb3.model.TransferRequest;
 import com.julius.spring.boot.ethweb3.service.Web3Service;
 import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
