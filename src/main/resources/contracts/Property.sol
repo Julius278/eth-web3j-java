@@ -7,6 +7,7 @@ contract Property is IProperty {
 
     string internal id;
     string internal name;
+    string internal description;
     int public value;
 
     constructor(string memory _name, int _value){
@@ -36,6 +37,14 @@ contract Property is IProperty {
 
     function getName() public view returns (string memory){
         return name;
+    }
+
+    function setDescription(string memory _description) public{
+        description = _description;
+    }
+
+    function getDescription() public view returns (string memory){
+        return description;
     }
 
 }

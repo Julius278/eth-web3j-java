@@ -11,7 +11,7 @@ import org.web3j.tx.gas.ContractGasProvider;
 
 import java.math.BigInteger;
 
-@SuppressWarnings("java:S2629")
+@SuppressWarnings({"java:S2629", "java:S112"})
 @Service
 public class PropertyService {
 
@@ -31,6 +31,7 @@ public class PropertyService {
 
 	public BigInteger getPropertyValue(String propertyId) {
 		try {
+			logger.info("get property value for propertyId: {}", propertyId);
 			return retrieveProperty(propertyId).getValue().send();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -39,7 +40,26 @@ public class PropertyService {
 
 	public String getPropertyName(String propertyId) {
 		try {
+			logger.info("get property name for propertyId: {}", propertyId);
 			return retrieveProperty(propertyId).getName().send();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public String getPropertyDescription(String propertyId) {
+		try {
+			logger.info("get property description for propertyId: {}", propertyId);
+			return retrieveProperty(propertyId).getDescription().send();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public void setPropertyDescription(String propertyId, String description) {
+		try {
+			logger.info("set property description for propertyId: {}", propertyId);
+			retrieveProperty(propertyId).setDescription(description).send();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -47,6 +67,7 @@ public class PropertyService {
 
     private Property retrieveProperty(String propertyId) {
 		try {
+			logger.info("retrieve property by propertyId: {}", propertyId);
 			var propertyAddress = propertySafe.getPropertyById(propertyId).send();
             return Property.load(propertyAddress, web3client, credentials, gasProvider);
 		} catch (Exception e) {

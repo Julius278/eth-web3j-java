@@ -81,12 +81,18 @@ public class PropertySafeService {
 
                 String id = p.getPropertyId().send();
                 String name = p.getName().send();
+                // if you're for the challenge 2 solution
+                // remember that you will need a new PropertySafe cause the Property contracts in the given safe do not have the new parameter
+                // it will fail to retrieve the description in this case
+                // at first, deploy a new PropertySafe and, create
+                String description = p.getDescription().send();
                 BigInteger value = p.getValue().send();
 
                 PropertyModel pm = new PropertyModel();
 
                 pm.setId(id);
                 pm.setName(name);
+                pm.setDescription(description);
                 pm.setValue(value);
 
                 properties.add(pm);
