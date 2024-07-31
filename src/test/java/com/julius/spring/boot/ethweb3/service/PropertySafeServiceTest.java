@@ -83,7 +83,6 @@ class PropertySafeServiceTest {
 
 		//when
 		try (MockedStatic<Property> property = Mockito.mockStatic(Property.class)) {
-			Property propertyMock = Mockito.mock(Property.class);
 			var deployPropertyCall = mock(RemoteFunctionCall.class);
 			property.when(
 					() -> Property.deploy(web3j, transactionManager, contractGasProvider, propertyName, BigInteger.valueOf(propertyValue)))
