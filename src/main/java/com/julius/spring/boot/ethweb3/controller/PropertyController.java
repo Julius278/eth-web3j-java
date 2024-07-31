@@ -43,4 +43,10 @@ public class PropertyController {
         propertyService.setPropertyDescription(propertyId, description);
         return "successfully set description for property " + propertyId;
     }
+
+    @GetMapping(path = "/api/property/{propertyId}/sum")
+    public BigInteger usePropertyContractSumFunction(@PathVariable("propertyId") String propertyId, @RequestParam("a") int a, @RequestParam("b") int b){
+        logger.info("usePropertyContractSumFunction");
+        return propertyService.useSumFunction(propertyId, a, b);
+    }
 }

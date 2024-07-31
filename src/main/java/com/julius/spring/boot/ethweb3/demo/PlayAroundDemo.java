@@ -24,7 +24,7 @@ public class PlayAroundDemo {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(PlayAroundDemo.class);
 	public static final String ETH_SERVER_ADDRESS = "https://ethereum-holesky-rpc.publicnode.com";
-	private static final String SAFE_CONTRACT_ADDRESS = "0xf7c76a829d311963c9efd415635b69147c6bafa0";
+	private static final String SAFE_CONTRACT_ADDRESS = "0x67b9bbe7c81550363a8a0769e15d642079cbc42e";
 
 	// only change these three
 	public static final String EXTERNAL_PROPERTY_ID = "<PLACE_YOUR_ID_HERE>";

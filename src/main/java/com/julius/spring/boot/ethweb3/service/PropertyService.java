@@ -65,6 +65,15 @@ public class PropertyService {
 		}
 	}
 
+	public BigInteger useSumFunction(String propertyId, int a, int b) {
+		try {
+			logger.info("use sum function with property '{}', int a: '{}', int b: '{}'", propertyId, a, b);
+			return retrieveProperty(propertyId).sum(BigInteger.valueOf(a), BigInteger.valueOf(b)).send();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
     private Property retrieveProperty(String propertyId) {
 		try {
 			logger.info("retrieve property by propertyId: {}", propertyId);

@@ -47,4 +47,7 @@ contract Property is IProperty {
         return description;
     }
 
+    function sum(int a, int b) public pure returns (int){
+        return a + b;
+    }
 }
