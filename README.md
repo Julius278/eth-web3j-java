@@ -98,6 +98,9 @@ mvn clean install
 mvn spring-boot:run
 ```
 or use the [PlayAroundDemo](https://github.com/Julius278/eth-web3j/blob/main/src/main/java/com/julius/spring/boot/ethweb3/demo/PlayAroundDemo.java)
+* Everything is prepared
+  * you can just start by choosing your PropertyName and ID (uniqueness is checked on the PropertySafe)
+  * you don't have to worry about setting up a node, wallet, funding of your account, transaction fees or the connection
 
 ## Challenge 2
 * Adjust a given solidity contract (Property.sol, e.g. a new getter function)

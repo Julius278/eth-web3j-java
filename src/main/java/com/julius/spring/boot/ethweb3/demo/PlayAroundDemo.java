@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
 
+@SuppressWarnings("java:S112")
 public class PlayAroundDemo {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(PlayAroundDemo.class);
@@ -26,14 +27,17 @@ public class PlayAroundDemo {
 	private static final String SAFE_CONTRACT_ADDRESS = "0x3be21b25ef8eca53b3de604a4a57e46569cc2e49";
 
 	// only change these three
-	public static final String EXTERNAL_PROPERTY_ID = "testID";
-	private static final String PROPERTY_NAME = "Julius278";
+	public static final String EXTERNAL_PROPERTY_ID = "<PLACE_YOUR_ID_HERE>";
+	private static final String PROPERTY_NAME = "<PLACE_A_NAME_HERE>";
 	public static final int PROPERTY_VALUE = 100;
 
 	/**
 	 *
 	 * Hi, this is the demo I mentioned in the README.
 	 * You can test everything you want in the main method, the others are there for setup reasons
+	 * -
+	 * Everything is prepared, you can just start by choosing your PropertyName and ID (uniqueness is checked on the PropertySafe)
+	 * After you chose your values, you can test the main method or extend it as needed
 	 *
 	 * @param args dont worry about that ;)
 	 */
