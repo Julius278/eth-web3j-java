@@ -1,11 +1,13 @@
 package com.julius.spring.boot.ethweb3.controller;
 
+import com.julius.spring.boot.ethweb3.model.PropertyModel;
 import com.julius.spring.boot.ethweb3.service.PropertySafeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
+import java.util.List;
 
 @RestController
 public class PropertySafeController {
@@ -25,10 +27,14 @@ public class PropertySafeController {
     }
 
     @PostMapping(path = "/api/propertySafe/property/{propertyId}")
-    public BigInteger addPropertyToPropertySafe(@PathVariable("propertyId") String propertyId, @RequestParam("propertyValue") int propertyValue){
+    public BigInteger addPropertyToPropertySafe(@PathVariable("propertyId") String propertyId, @RequestParam("propertyName") String propertyName,@RequestParam("propertyValue") int propertyValue){
         logger.info("addPropertyToPropertySafe");
-        return propertySafeService.deployPropertyToSafe(propertyId, propertyValue);
+        return propertySafeService.deployPropertyToSafe(propertyId, propertyName, propertyValue);
     }
 
-    //TODO add an endpoint which returns all properties with their ids
+    @GetMapping(path = "/api/propertySafe/properties")
+    public List<PropertyModel> listPropertySafe(){
+        logger.info("listPropertySafe");
+        return propertySafeService.listPropertySafe();
+    }
 }
