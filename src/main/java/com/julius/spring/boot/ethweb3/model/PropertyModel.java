@@ -13,5 +13,6 @@ import java.math.BigInteger;
 public class PropertyModel {
     private String id;
     private String name;
+    private String description;
     private BigInteger value;
 }

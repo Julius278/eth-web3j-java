@@ -19,12 +19,12 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
 
-@SuppressWarnings("java:S112")
+@SuppressWarnings({"java:S112", "java:S2629"})
 public class PlayAroundDemo {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(PlayAroundDemo.class);
 	public static final String ETH_SERVER_ADDRESS = "https://ethereum-holesky-rpc.publicnode.com";
-	private static final String SAFE_CONTRACT_ADDRESS = "0x3be21b25ef8eca53b3de604a4a57e46569cc2e49";
+	private static final String SAFE_CONTRACT_ADDRESS = "0xf7c76a829d311963c9efd415635b69147c6bafa0";
 
 	// only change these three
 	public static final String EXTERNAL_PROPERTY_ID = "<PLACE_YOUR_ID_HERE>";
@@ -66,6 +66,12 @@ public class PlayAroundDemo {
 		// getting the
 		BigInteger value = property.value().send();
 		LOGGER.info("value of deployed property: {}", value);
+
+
+		//Challenge 2 from here
+		property.setDescription("this is a description").send();
+
+		LOGGER.info("new description for property wit id '{}': {}", EXTERNAL_PROPERTY_ID, property.getDescription().send());
 
 	}
 
