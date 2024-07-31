@@ -79,13 +79,35 @@ As this is just a showcase / fun project / poc / whatever, there are no special 
 git clone https://github.com/Julius278/eth-web3j.git
 ```
 * (if you have a GitHub account and are familiar with the platform, you can also fork and clone your own repository)
+* you're on the "main" branch now
 * Build the Java project on the project root directory
 ``` bash
 mvn clean install
 ```
 * alternatively you can use the maven plugin of your IDE, here is an example for Intellij </br>
 <img src="docs/intellij_maven_plugin.png" alt="intellij_maven_plugin" width="400"/>
-* it should show a _BUILD SUCCESS_ message </br>
+
+* it should show a <i>BUILD SUCCESS</i> message </br>
 <img src="docs/maven_build_success.png" alt="maven_build_success" width="250"/>
 
 ## Challenge 2
+* Adjust a given solidity contract (Property.sol, e.g. a new getter function)
+``` Solidity
+function getTest() external view returns (string memory){....}
+```
+* Build the Java maven project again 
+``` bash
+mvn clean install
+```
+* Use the new getter function in your Java code
+* A possible solution is shown in branch: ?????
+
+## Challenge 3
+Let's do calculation on-chain
+* Add a new solidity function which takes two numbers (int) and returns
+* Build the Java maven project again
+``` bash
+mvn clean install
+```
+* Use the new getter function in your Java code
+* A possible solution is shown in branch: ?????
