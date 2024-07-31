@@ -112,11 +112,15 @@ function getTest() external view returns (string memory){....}
 mvn clean install
 ```
 * Use the new getter function in your Java code
-* A possible solution is shown in branch: ?????
+* A possible solution is shown in branch: challenge-3-solution, in short you can see it [here](https://github.com/Julius278/eth-web3j/pull/1)
 
 ## Challenge 3
 Let's do a calculation on-chain
 * Add a new solidity function which takes two numbers (int) and returns an int (like sum or multiply it)
+* one hint to Integers
+  * Solidity supports 64 different integer types
+  * int results in Solidity to int256
+  * int in Solidity is way bigger than the normal int in Java, so in Java you will have to use BigInteger
 * Build the Java maven project again
 * Use the new function in your Java code
 * A possible solution is shown in branch: challenge-3-solution, in short you can see it [here](https://github.com/Julius278/eth-web3j/pull/2)
