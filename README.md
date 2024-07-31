@@ -112,7 +112,7 @@ function getTest() external view returns (string memory){....}
 mvn clean install
 ```
 * Use the new getter function in your Java code
-* A possible solution is shown in branch: ?????
+* A possible solution is shown in branch: challenge-2-solution, in short you can see it [here](https://github.com/Julius278/eth-web3j/pull/1)
 
 ## Challenge 3
 Let's do a calculation on-chain
