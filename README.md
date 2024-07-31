@@ -1,4 +1,4 @@
-On the [bottom of the README](#Challenge-1) there are some challenges to get into the topic. Have fun!
+On the [bottom of the README](#web3j-challenges) there are some challenges to get into the topic. Have fun!
 
 # General Web3J information
 The application takes advantage of the [Web3J library](https://github.com/web3j/web3j) to communicate with the ethereum blockchain.
@@ -72,7 +72,10 @@ You can also override the node by defining it via environment variables (`ETH_NO
 As this is just a showcase / fun project / poc / whatever, there are no special profiles for main or test net.
 
 
-# Challenges to get into the topic
+# Web3j challenges
+Hey, glad you're ready to learn about Web3j.</br>
+Feel free to fork (or just clone) and play around.
+
 ## Challenge 1
 * Git clone project (https://github.com/Julius278/eth-web3j)
 ``` bash
@@ -90,6 +93,12 @@ mvn clean install
 * it should show a <i>BUILD SUCCESS</i> message </br>
 <img src="docs/maven_build_success.png" alt="maven_build_success" width="250"/>
 
+* To play around with the existing functionality you can start the spring boot service
+``` bash
+mvn spring-boot:run
+```
+or use the [PlayAroundDemo](https://github.com/Julius278/eth-web3j/blob/main/src/main/java/com/julius/spring/boot/ethweb3/PlayAroundDemo.java)
+
 ## Challenge 2
 * Adjust a given solidity contract (Property.sol, e.g. a new getter function)
 ``` Solidity
@@ -103,11 +112,12 @@ mvn clean install
 * A possible solution is shown in branch: ?????
 
 ## Challenge 3
-Let's do calculation on-chain
+Let's do a calculation on-chain
 * Add a new solidity function which takes two numbers (int) and returns
 * Build the Java maven project again
-``` bash
-mvn clean install
-```
 * Use the new getter function in your Java code
 * A possible solution is shown in branch: ?????
+
+
+## Challenge 99
+Write some units tests for your new code ;)
