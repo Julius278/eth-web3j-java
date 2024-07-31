@@ -97,7 +97,7 @@ mvn clean install
 ``` bash
 mvn spring-boot:run
 ```
-or use the [PlayAroundDemo](https://github.com/Julius278/eth-web3j/blob/main/src/main/java/com/julius/spring/boot/ethweb3/PlayAroundDemo.java)
+or use the [PlayAroundDemo](https://github.com/Julius278/eth-web3j/blob/main/src/main/java/com/julius/spring/boot/ethweb3/demo/PlayAroundDemo.java)
 
 ## Challenge 2
 * Adjust a given solidity contract (Property.sol, e.g. a new getter function)
