@@ -112,14 +112,14 @@ function getTest() external view returns (string memory){....}
 mvn clean install
 ```
 * Use the new getter function in your Java code
-* A possible solution is shown in branch: challenge-2-solution, in short you can see it [here](https://github.com/Julius278/eth-web3j/pull/1)
+* A possible solution is shown in branch: ?????
 
 ## Challenge 3
 Let's do a calculation on-chain
-* Add a new solidity function which takes two numbers (int) and returns
+* Add a new solidity function which takes two numbers (int) and returns an int (like sum or multiply it)
 * Build the Java maven project again
-* Use the new getter function in your Java code
-* A possible solution is shown in branch: ?????
+* Use the new function in your Java code
+* A possible solution is shown in branch: challenge-3-solution, in short you can see it [here](https://github.com/Julius278/eth-web3j/pull/2)
 
 
 ## Challenge 99
