@@ -1,4 +1,4 @@
-On the bottom of the README there are some challenges to get into the topic. Have fun!
+On the [bottom of the README](#Challenge-1) there are some challenges to get into the topic. Have fun!
 
 # General Web3J information
 The application takes advantage of the [Web3J library](https://github.com/web3j/web3j) to communicate with the ethereum blockchain.
