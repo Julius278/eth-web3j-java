@@ -1,0 +1,353 @@
+{
+	"info": {
+		"_postman_id": "a9e4ba7e-4654-4b0d-bbe0-4b252f28bf88",
+		"name": "Web3j",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27116785"
+	},
+	"item": [
+		{
+			"name": "Web3j Blocknumber",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/eth/blockNumber",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"eth",
+						"blockNumber"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Web3j address balance",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/eth/balance/0x9F162B41fA8e44F885BEDAE410418145A4e8ED06",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"eth",
+						"balance",
+						"0x9F162B41fA8e44F885BEDAE410418145A4e8ED06"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Web3j address trxCount",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"address\": \"0x88514dd8e38Bdb2C57045E85F7735161b6dCAA5F\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/eth/trxCount/0x88514dd8e38Bdb2C57045E85F7735161b6dCAA5F",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"eth",
+						"trxCount",
+						"0x88514dd8e38Bdb2C57045E85F7735161b6dCAA5F"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Web3j send eth",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"recipient\" : \"0x606010F269a65a8E23e24Bf6545A01B11D33a6d9\",\r\n    \"amountInEth\" : 0.01\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/eth/send",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"eth",
+						"send"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Web3j propertySafe deploy",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/propertySafe/deploy",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"propertySafe",
+						"deploy"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Web3j property add",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"address\": \"0x88514dd8e38Bdb2C57045E85F7735161b6dCAA5F\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/propertySafe/property/ID_test123240?propertyName=TestName&propertyValue=12345678",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"propertySafe",
+						"property",
+						"ID_test123240"
+					],
+					"query": [
+						{
+							"key": "propertyName",
+							"value": "TestName"
+						},
+						{
+							"key": "propertyValue",
+							"value": "12345678"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Web3j GET properties",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/propertySafe/properties",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"propertySafe",
+						"properties"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Web3j GET property value",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/property/ID_test123240/value",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"property",
+						"ID_test123240",
+						"value"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Web3j GET property value Copy",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/property/testID/name",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"property",
+						"testID",
+						"name"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ETH blocknumber JSON-RPC",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"jsonrpc\": \"2.0\",\r\n    \"method\": \"eth_blockNumber\",\r\n    \"params\": [],\r\n    \"id\": 1\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8545",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8545"
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ETH blocknumber JSON-RPC holesky testnet",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"jsonrpc\": \"2.0\",\r\n    \"method\": \"eth_blockNumber\",\r\n    \"params\": [],\r\n    \"id\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://ethereum-holesky-rpc.publicnode.com",
+					"protocol": "https",
+					"host": [
+						"ethereum-holesky-rpc",
+						"publicnode",
+						"com"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
