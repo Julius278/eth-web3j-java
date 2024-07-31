@@ -2,8 +2,8 @@ On the bottom of the README there are some challenges to get into the topic. Hav
 
 # General Web3J information
 The application takes advantage of the [Web3J library](https://github.com/web3j/web3j) to communicate with the ethereum blockchain.
-To be correct, you connect to a ethereum (main or test net) node via [JSON-RPC](https://www.jsonrpc.org/) connection and retrieve the information this specific node/chain provides.
-```
+To be correct, you connect to an ethereum (main or test net) node via [JSON-RPC](https://www.jsonrpc.org/) connection and retrieve the information this specific node/chain provides.
+``` XML
     <dependency>
 	<groupId>org.web3j</groupId>
 	<artifactId>core</artifactId>
@@ -16,7 +16,7 @@ The `web3j-maven-plugin is needed` to generate the Java wrapper classes for your
 The `build-helper-maven-plugin` is needed to include the generated classes into your /target/ folder.
 More details in the pom.xml
 
-```
+``` XML
     <build>
         <plugins>
             <plugin>
@@ -59,7 +59,7 @@ example for postman or other testing tools:
 
 ### cURL
 example for the blockNumber endpoint:
-```
+``` bash
 curl --location 'http://localhost:8080/api/eth/blockNumber'
 ```
 
@@ -75,8 +75,14 @@ As this is just a showcase / fun project / poc / whatever, there are no special 
 # Challenges to get into the topic
 ## Challenge 1
 * Git clone project (https://github.com/Julius278/eth-web3j)
+``` bash
+git clone https://github.com/Julius278/eth-web3j.git
+```
 * (if you have a GitHub account and are familiar with the platform, you can also fork and clone your own repository)
-* Build (mvn clean install) the Java project on the project root directory
+* Build the Java project on the project root directory
+``` bash
+mvn clean install
+```
   * alternatively you can use the maven plugin of your IDE, here is an example for Intellij
 ![intellij_maven_plugin.png](docs/intellij_maven_plugin.png)
 * it should show a _BUILD SUCCESS_ message
