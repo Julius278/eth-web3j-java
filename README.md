@@ -83,7 +83,7 @@ git clone https://github.com/Julius278/eth-web3j.git
 ``` bash
 mvn clean install
 ```
-  * alternatively you can use the maven plugin of your IDE, here is an example for Intellij </br>
+* alternatively you can use the maven plugin of your IDE, here is an example for Intellij </br>
 <img src="docs/intellij_maven_plugin.png" alt="intellij_maven_plugin" width="400"/>
 * it should show a _BUILD SUCCESS_ message </br>
 <img src="docs/maven_build_success.png" alt="maven_build_success" width="250"/>
