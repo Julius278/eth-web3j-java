@@ -6,9 +6,11 @@ import {IProperty} from "./IProperty.sol";
 contract Property is IProperty {
 
     string internal id;
+    string internal name;
     int public value;
 
-    constructor(int _value){
+    constructor(string memory _name, int _value){
+        name = _name;
         value = _value;
     }
 
@@ -26,6 +28,14 @@ contract Property is IProperty {
 
     function getPropertyId() public view returns (string memory){
         return id;
+    }
+
+    function setName(string memory _name) public{
+        name = _name;
+    }
+
+    function getName() public view returns (string memory){
+        return name;
     }
 
 }

@@ -42,6 +42,7 @@ class PropertySafeServiceTest {
 		//given
 		String contractAddress = "0x12345";
 		String externalPropertyId = "test123";
+		String propertyName = "test123Name";
 		int propertyValue = 300;
 
 		//when
@@ -49,7 +50,7 @@ class PropertySafeServiceTest {
 			Property propertyMock = Mockito.mock(Property.class);
 			var deployPropertyCall = mock(RemoteFunctionCall.class);
 			property.when(
-					() -> Property.deploy(web3j, transactionManager, contractGasProvider, BigInteger.valueOf(propertyValue)))
+					() -> Property.deploy(web3j, transactionManager, contractGasProvider, propertyName, BigInteger.valueOf(propertyValue)))
 				.thenReturn(deployPropertyCall);
 			when(deployPropertyCall.send()).thenReturn(propertyMock);
 
@@ -67,7 +68,7 @@ class PropertySafeServiceTest {
 			when(getValueCall.send()).thenReturn(BigInteger.valueOf(propertyValue));
 
 			//then
-			assertEquals(BigInteger.valueOf(propertyValue), propertySafeService.deployPropertyToSafe(externalPropertyId, propertyValue));
+			assertEquals(BigInteger.valueOf(propertyValue), propertySafeService.deployPropertyToSafe(externalPropertyId, propertyName, propertyValue));
 		}
 
 	}

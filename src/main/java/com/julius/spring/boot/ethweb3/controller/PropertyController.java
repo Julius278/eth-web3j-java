@@ -19,17 +19,15 @@ public class PropertyController {
         this.propertyService = propertyService;
     }
 
-    @SuppressWarnings("java:S3740")
-    @GetMapping(
-        path = "/api/propertySafe/properties",
-        produces = MediaType.APPLICATION_JSON_VALUE)
-    public List fetchProperties(){
-        return propertyService.getProperties();
-    }
-
     @GetMapping(path = "/api/property/{propertyId}/value")
     public BigInteger retrievePropertyValue(@PathVariable("propertyId") String propertyId){
-        logger.info("deploySafe");
+        logger.info("retrievePropertyValue");
         return propertyService.getPropertyValue(propertyId);
+    }
+
+    @GetMapping(path = "/api/property/{propertyId}/name")
+    public String retrievePropertyName(@PathVariable("propertyId") String propertyId){
+        logger.info("retrievePropertyName");
+        return propertyService.getPropertyName(propertyId);
     }
 }

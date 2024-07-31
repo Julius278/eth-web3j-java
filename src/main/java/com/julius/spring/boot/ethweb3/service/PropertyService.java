@@ -10,7 +10,6 @@ import org.web3j.protocol.Web3j;
 import org.web3j.tx.gas.ContractGasProvider;
 
 import java.math.BigInteger;
-import java.util.List;
 
 @SuppressWarnings("java:S2629")
 @Service
@@ -30,18 +29,6 @@ public class PropertyService {
 		this.credentials = credentials;
 	}
 
-    public String addPropertyToPropertySafe(String propertyId) {
-        BigInteger standardValue = BigInteger.valueOf(200L);
-		try {
-            logger.info("try to create new property by id: {}", propertyId);
-			propertySafe.createProperty(propertyId, standardValue).send();
-            logger.info("created new property");
-            return propertySafe.getPropertyById(propertyId).send();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
 	public BigInteger getPropertyValue(String propertyId) {
 		try {
 			return retrieveProperty(propertyId).getValue().send();
@@ -50,14 +37,13 @@ public class PropertyService {
 		}
 	}
 
-    public List getProperties() {
-        try {
-            logger.info("try to get a list of properties");
-            return propertySafe.getProperties().sendAsync().get();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
+	public String getPropertyName(String propertyId) {
+		try {
+			return retrieveProperty(propertyId).getName().send();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
 
     private Property retrieveProperty(String propertyId) {
 		try {

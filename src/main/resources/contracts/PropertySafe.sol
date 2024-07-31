@@ -15,10 +15,10 @@ contract PropertySafe {
     address[] private propertyAddresses;
 
 
-    function createProperty(string memory _externalPropertyId, int _value) external {
+    function createProperty(string memory _externalPropertyId, string memory _name, int _value) external {
         require(propertyMap[_externalPropertyId] == address(0));
 
-        Property property = new Property(_value);
+        Property property = new Property(_name, _value);
         property.setPropertyId(_externalPropertyId);
         address propertyAddress = address(property);
         propertyAddresses.push(propertyAddress);
