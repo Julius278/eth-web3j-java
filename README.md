@@ -77,9 +77,9 @@ Hey, glad you're ready to learn about Web3j.</br>
 Feel free to fork (or just clone) and play around.
 
 ## Challenge 1
-* Git clone project (https://github.com/Julius278/eth-web3j)
+* Git clone project (https://github.com/Julius278/eth-web3j-java)
 ``` bash
-git clone https://github.com/Julius278/eth-web3j.git
+git clone https://github.com/Julius278/eth-web3j-java.git
 ```
 * (if you have a GitHub account and are familiar with the platform, you can also fork and clone your own repository)
 * you're on the "main" branch now
