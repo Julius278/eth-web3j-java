@@ -77,7 +77,7 @@ Hey, glad you're ready to learn about Web3j.</br>
 Feel free to fork (or just clone) and play around.
 
 ## Challenge 1
-* Git clone project (https://github.com/Julius278/eth-web3j)
+* Git clone project (https://github.com/Julius278/eth-web3j-java)
 ``` bash
 git clone https://github.com/Julius278/eth-web3j.git
 ```
@@ -97,7 +97,7 @@ mvn clean install
 ``` bash
 mvn spring-boot:run
 ```
-or use the [PlayAroundDemo](https://github.com/Julius278/eth-web3j/blob/main/src/main/java/com/julius/spring/boot/ethweb3/demo/PlayAroundDemo.java)
+or use the [PlayAroundDemo](https://github.com/Julius278/eth-web3j-java/blob/main/src/main/java/com/julius/spring/boot/ethweb3/demo/PlayAroundDemo.java)
 * Everything is prepared
   * you can just start by choosing your PropertyName and ID (uniqueness is checked on the PropertySafe)
   * you don't have to worry about setting up a node, wallet, funding of your account, transaction fees or the connection
@@ -112,7 +112,7 @@ function getTest() external view returns (string memory){....}
 mvn clean install
 ```
 * Use the new getter function in your Java code
-* A possible solution is shown in branch: challenge-3-solution, in short you can see it [here](https://github.com/Julius278/eth-web3j/pull/1)
+* A possible solution is shown in branch: challenge-3-solution, in short you can see it [here](https://github.com/Julius278/eth-web3j-java/pull/1)
 
 ## Challenge 3
 Let's do a calculation on-chain
@@ -123,7 +123,7 @@ Let's do a calculation on-chain
   * int in Solidity is way bigger than the normal int in Java, so in Java you will have to use BigInteger
 * Build the Java maven project again
 * Use the new function in your Java code
-* A possible solution is shown in branch: challenge-3-solution, in short you can see it [here](https://github.com/Julius278/eth-web3j/pull/2)
+* A possible solution is shown in branch: challenge-3-solution, in short you can see it [here](https://github.com/Julius278/eth-web3j-java/pull/2)
 
 
 ## Challenge 99
