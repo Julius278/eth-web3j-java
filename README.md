@@ -76,6 +76,9 @@ As this is just a showcase / fun project / poc / whatever, there are no special 
 Hey, glad you're ready to learn about Web3j.</br>
 Feel free to fork (or just clone) and play around.
 
+If you want to track your transactions, you can observe them on the testnet block explorer:</br>
+https://holesky.etherscan.io/address/0x9f162b41fa8e44f885bedae410418145a4e8ed06
+
 ## Challenge 1
 * Git clone project (https://github.com/Julius278/eth-web3j-java)
 ``` bash
