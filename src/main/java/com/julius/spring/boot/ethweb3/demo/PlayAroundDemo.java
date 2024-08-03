@@ -4,7 +4,6 @@ import com.julius.spring.boot.ethweb3.Property;
 import com.julius.spring.boot.ethweb3.PropertySafe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.ResourceUtils;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.WalletUtils;
 import org.web3j.crypto.exception.CipherException;
@@ -15,7 +14,6 @@ import org.web3j.tx.TransactionManager;
 import org.web3j.tx.gas.ContractGasProvider;
 import org.web3j.tx.gas.DefaultGasProvider;
 
-import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
 
@@ -23,6 +21,7 @@ import java.math.BigInteger;
 public class PlayAroundDemo {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(PlayAroundDemo.class);
+	public static final String KEY_FILE_PATH = "./src/main/resources/keyfile.json";
 	public static final String ETH_SERVER_ADDRESS = "https://ethereum-holesky-rpc.publicnode.com";
 	private static final String SAFE_CONTRACT_ADDRESS = "0x3be21b25ef8eca53b3de604a4a57e46569cc2e49";
 
@@ -48,7 +47,7 @@ public class PlayAroundDemo {
 		LOGGER.info("connected node: {}", web3jConnection.web3ClientVersion().send().getWeb3ClientVersion());
 
 		// setup for sending transactions
-		final Credentials credentials = loadCredentials();
+		final Credentials credentials = loadCredentials(KEY_FILE_PATH);
 		final TransactionManager manager = createTransactionManager(web3jConnection, credentials);
 		final ContractGasProvider gasProvider = new DefaultGasProvider();
 
@@ -69,13 +68,11 @@ public class PlayAroundDemo {
 
 	}
 
-	public static Credentials loadCredentials() {
+	public static Credentials loadCredentials(String keyFilePath) {
 		Credentials credentials = null;
 		try {
-			String keyFile = "./src/main/resources/keyfile.json";
-			File key = ResourceUtils.getFile(keyFile);
-			LOGGER.info("keyfile path: {}", key.getPath());
-			credentials = WalletUtils.loadCredentials("password", key);
+			LOGGER.info("loading key file: {}", keyFilePath);
+			credentials = WalletUtils.loadCredentials("password", keyFilePath);
 			LOGGER.info("successfully loaded credentials, address: {}", credentials.getAddress());
 		} catch (IOException | CipherException e) {
 			LOGGER.error("Failed to load credentials", e);
