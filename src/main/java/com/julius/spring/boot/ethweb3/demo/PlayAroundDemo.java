@@ -45,6 +45,7 @@ public class PlayAroundDemo {
 		// setup for general node query
 		final Web3j web3jConnection = web3jClient();
 		LOGGER.info("connected node: {}", web3jConnection.web3ClientVersion().send().getWeb3ClientVersion());
+		LOGGER.info("current block number: {}", web3jConnection.ethBlockNumber().send().getBlockNumber());
 
 		// setup for sending transactions
 		final Credentials credentials = loadCredentials(KEY_FILE_PATH);
