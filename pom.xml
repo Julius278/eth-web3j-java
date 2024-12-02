@@ -16,7 +16,7 @@
 
 	<properties>
 		<java.version>17</java.version>
-		<web3j-maven-plugin.version>4.10.3</web3j-maven-plugin.version>
+		<web3j-maven-plugin.version>4.12.1</web3j-maven-plugin.version>
 		<web3j-core.version>4.12.2</web3j-core.version>
 		<web3j-unit.version>4.12.2</web3j-unit.version>
 	</properties>
@@ -76,6 +76,11 @@
 			<id>splunk-maven</id>
 			<name>splunk-maven repo</name>
 			<url>https://splunk.jfrog.io/splunk/ext-releases-local</url>
+		</repository>
+		<repository>
+			<id>cloudsmith-maven</id>
+			<name>quorum-mainnet repo</name>
+			<url>https://dl.cloudsmith.io/public/consensys/quorum-mainnet-launcher/maven/</url>
 		</repository>
 	</repositories>
 
