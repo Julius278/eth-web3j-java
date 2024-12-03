@@ -47,6 +47,33 @@ public class PropertyService {
 		}
 	}
 
+	public String getPropertyDescription(String propertyId) {
+		try {
+			logger.info("get property description for propertyId: {}", propertyId);
+			return retrieveProperty(propertyId).getDescription().send();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public void setPropertyDescription(String propertyId, String description) {
+		try {
+			logger.info("set property description for propertyId: {}", propertyId);
+			retrieveProperty(propertyId).setDescription(description).send();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public BigInteger useSumFunction(String propertyId, int a, int b) {
+		try {
+			logger.info("use sum function with property '{}', int a: '{}', int b: '{}'", propertyId, a, b);
+			return retrieveProperty(propertyId).sum(BigInteger.valueOf(a), BigInteger.valueOf(b)).send();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
     private Property retrieveProperty(String propertyId) {
 		try {
 			logger.info("retrieve property by propertyId: {}", propertyId);
