@@ -54,18 +54,11 @@
 			<version>${web3j-unit.version}</version>
 		</dependency>
 
-		<!-- Besu and EVM stuff -->
-		<dependency>
-			<groupId>org.web3j</groupId>
-			<artifactId>web3j-evm</artifactId>
-			<version>${web3j-unit.version}</version>
-		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/org.hyperledger.besu.internal/core -->
 		<dependency>
 			<groupId>org.hyperledger.besu.internal</groupId>
 			<artifactId>core</artifactId>
-			<version>21.10.2</version>
+			<version>24.8.0</version>
 			<scope>runtime</scope>
 		</dependency>
 

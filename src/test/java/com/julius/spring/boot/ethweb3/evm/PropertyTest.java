@@ -5,13 +5,14 @@ import com.julius.spring.boot.ethweb3.PropertySafe;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.web3j.EVMTest;
+import org.web3j.NodeType;
 import org.web3j.protocol.Web3j;
 import org.web3j.tx.TransactionManager;
 import org.web3j.tx.gas.ContractGasProvider;
 
 import java.math.BigInteger;
 
-@EVMTest()
+@EVMTest(type = NodeType.BESU)
 class PropertyTest {
 
 	@Test

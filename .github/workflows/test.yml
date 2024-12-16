@@ -3,7 +3,7 @@ name: web3j tests on plain ubuntu with java
 on: [ push ]
 
 jobs:
-  bCP1ld:
+  build:
     name: mvn build with Java 17, incl. unit tests
     runs-on: ubuntu-latest
     steps:
