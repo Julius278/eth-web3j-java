@@ -12,7 +12,7 @@ import org.web3j.tx.gas.ContractGasProvider;
 
 import java.math.BigInteger;
 
-@EVMTest(type = NodeType.BESU)
+@EVMTest()
 class PropertyTest {
 
 	@Test
