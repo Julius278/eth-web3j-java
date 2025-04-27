@@ -28,4 +28,23 @@ public class PropertyController {
         logger.info("retrievePropertyName");
         return propertyService.getPropertyName(propertyId);
     }
+
+    @GetMapping(path = "/api/property/{propertyId}/description")
+    public String retrievePropertyDescription(@PathVariable("propertyId") String propertyId){
+        logger.info("retrievePropertyDescription");
+        return propertyService.getPropertyDescription(propertyId);
+    }
+
+    @PostMapping(path = "/api/property/{propertyId}/description")
+    public String setPropertyDescription(@PathVariable("propertyId") String propertyId, @RequestParam("description") String description){
+        logger.info("setPropertyDescription");
+        propertyService.setPropertyDescription(propertyId, description);
+        return "successfully set description for property " + propertyId;
+    }
+
+    @GetMapping(path = "/api/property/{propertyId}/sum")
+    public BigInteger usePropertyContractSumFunction(@PathVariable("propertyId") String propertyId, @RequestParam("a") int a, @RequestParam("b") int b){
+        logger.info("usePropertyContractSumFunction");
+        return propertyService.useSumFunction(propertyId, a, b);
+    }
 }
