@@ -74,6 +74,9 @@ jobs:
           cat hardhat.log
           exit 1
 
+      - name: Fund keyfile account with ETH
+        run: npx hardhat run scripts/setup-hardhat.js
+
       - name: Compile app for deployment demo
         run: mvn -B -DskipTests compile
 

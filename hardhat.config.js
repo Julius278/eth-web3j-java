@@ -6,7 +6,24 @@ require("hardhat-contract-sizer");
 module.exports = {
   defaultNetwork: "hardhat",
   networks: {
-    hardhat: {},
+    hardhat: {
+      // Allow the network to handle accounts properly
+      chainId: 31337,
+      allowUnlimitedContractSize: true,
+      // Initialize accounts with large balances
+      accounts: {
+        mnemonic: "test test test test test test test test test test test junk",
+        path: "m/44'/60'/0'/0",
+        initialIndex: 0,
+        count: 20,
+      },
+      // Custom genesis state to fund the keyfile account
+      genesisAccounts: {
+        "0x9f162b41fa8e44f885bedae410418145a4e8ed06": {
+          balance: "1000000000000000000000" // 1000 ETH in wei
+        }
+      }
+    },
   },
   solidity: {
     compilers: [
@@ -32,3 +49,6 @@ module.exports = {
     timeout: 3000000,
   },
 };
+
+
+
