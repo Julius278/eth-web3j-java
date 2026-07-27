@@ -37,7 +37,11 @@ jobs:
           BESU_RPC_WS_ENABLED: "true"
           BESU_MINER_ENABLED: "true"
           BESU_MINER_COINBASE: "0x9f162b41fa8e44f885bedae410418145a4e8ed06"
+          BESU_MINER_STRATUM_MINING_THREADS: "1"
+          BESU_MINER_EXTRA_DATA: "Besu"
+          BESU_MIN_BLOCK_FILL_PERCENTAGE: "100"
           BESU_HOST_ALLOWLIST: "*"
+          BESU_LOGGING: "TRACE"
     steps:
       - uses: actions/checkout@v7
       - name: Set up Java
@@ -53,9 +57,18 @@ jobs:
               --data '{"jsonrpc":"2.0","method":"eth_chainId","params":[],"id":1}' \
               http://localhost:8545 || true)
 
+            # Check if we have a proper JSON response with result
             if echo "$response" | grep -q '"result"'; then
-              echo "Besu node is ready"
-              exit 0
+              echo "Besu node is responding"
+              # Additional check to ensure mining is working
+              blockResponse=$(curl -sS -X POST -H "Content-Type: application/json" \
+                --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
+                http://localhost:8545 || true)
+              if echo "$blockResponse" | grep -q '"result"'; then
+                echo "Besu node is ready for deployments"
+                sleep 3
+                exit 0
+              fi
             fi
             echo "Waiting for Besu node... ($i/60)"
             echo "Last response: $response"

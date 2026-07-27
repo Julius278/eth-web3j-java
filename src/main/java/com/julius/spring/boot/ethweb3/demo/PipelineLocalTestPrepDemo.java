@@ -10,7 +10,7 @@ import org.web3j.crypto.exception.CipherException;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.gas.ContractGasProvider;
-import org.web3j.tx.gas.DefaultGasProvider;
+import org.web3j.tx.gas.StaticGasProvider;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -25,6 +25,10 @@ public class PipelineLocalTestPrepDemo {
 	public static final String EXTERNAL_PROPERTY_ID = "dummy-external-property-id";
 	private static final String PROPERTY_NAME = "dummy-property-name";
 	public static final int PROPERTY_VALUE = 100;
+	
+	// Gas parameters optimized for Besu dev mode
+	private static final BigInteger GAS_PRICE = BigInteger.valueOf(1_000_000_000L); // 1 Gwei
+	private static final BigInteger GAS_LIMIT = BigInteger.valueOf(3_000_000L); // 3 Million gas
 
 
 	public static void main(String[] args) throws Exception {
@@ -36,17 +40,25 @@ public class PipelineLocalTestPrepDemo {
 
 		// setup for sending transactions
 		final Credentials credentials = loadCredentials(KEY_FILE_PATH);
-		final ContractGasProvider gasProvider = new DefaultGasProvider();
+		final ContractGasProvider gasProvider = new StaticGasProvider(GAS_PRICE, GAS_LIMIT);
+		
+		LOGGER.info("Using StaticGasProvider with gasPrice: {} wei, gasLimit: {}", GAS_PRICE, GAS_LIMIT);
 
 		// load the PropertySafe with the given address (pre-deployed)
+		LOGGER.info("Deploying PropertySafe...");
 		PropertySafe propertySafe = PropertySafe.deploy( web3jConnection, credentials, gasProvider).send();
 		LOGGER.info("property deployed on address: {}", propertySafe.getContractAddress());
 		LOGGER.info("deployPropertyToSafe for id: {} on propertySafe: {}", EXTERNAL_PROPERTY_ID, propertySafe.getContractAddress());
 
 		// deploy a new Property and add it to the PropertySafe
+		LOGGER.info("Deploying Property...");
 		Property property = Property.deploy(web3jConnection, credentials, gasProvider, PROPERTY_NAME, BigInteger.valueOf(PROPERTY_VALUE)).send();
-		property.setPropertyId(EXTERNAL_PROPERTY_ID).send();
 		LOGGER.info("contractAddress of deployed property: {}", property.getContractAddress());
+		
+		LOGGER.info("Setting property ID...");
+		property.setPropertyId(EXTERNAL_PROPERTY_ID).send();
+		
+		LOGGER.info("Adding property to PropertySafe...");
 		propertySafe.addProperty(EXTERNAL_PROPERTY_ID, property.getContractAddress()).send();
 		LOGGER.info("successfully added property to the PropertySafe");
 	}
