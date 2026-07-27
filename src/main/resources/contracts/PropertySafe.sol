@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.0;
+pragma solidity 0.8.15;
 
 import {Property} from "./Property.sol";
 
@@ -16,7 +16,7 @@ contract PropertySafe {
 
 
     function createProperty(string memory _externalPropertyId, string memory _name, int256 _value) external {
-        require(propertyMap[_externalPropertyId] == address(0));
+        require(propertyMap[_externalPropertyId] == address(0), "externalPropertyId already in use");
 
         Property property = new Property(_name, _value);
         property.setPropertyId(_externalPropertyId);
