@@ -38,10 +38,8 @@ jobs:
           BESU_MINER_ENABLED: "true"
           BESU_MINER_COINBASE: "0x9f162b41fa8e44f885bedae410418145a4e8ed06"
           BESU_MINER_STRATUM_MINING_THREADS: "1"
-          BESU_MINER_EXTRA_DATA: "Besu"
           BESU_MIN_BLOCK_FILL_PERCENTAGE: "100"
           BESU_HOST_ALLOWLIST: "*"
-          BESU_LOGGING: "TRACE"
     steps:
       - uses: actions/checkout@v7
       - name: Set up Java
