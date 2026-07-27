@@ -1,0 +1,33 @@
+{
+  "name": "Property-Safe-Collection",
+  "version": "1",
+  "items": [
+    {
+      "type": "http",
+      "name": "get ",
+      "seq": 1,
+      "request": {
+        "url": "http://localhost:8080/api/propertySafe/properties",
+        "method": "GET",
+        "headers": [],
+        "params": [],
+        "body": {},
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "auth": {"mode": "none"}
+      }
+    }
+  ],
+  "environments": [],
+  "brunoConfig": {
+    "version": "1",
+    "name": "Property-Safe-Collection",
+    "type": "collection",
+    "ignore": [
+      "node_modules",
+      ".git"
+    ]
+  }
+}

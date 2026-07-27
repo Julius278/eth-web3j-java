@@ -33,3 +33,7 @@ build/
 .vscode/
 /src/main/resources/hiddenKeys/
 /node_modules/
+/src/main/resources/artifacts/
+/src/main/resources/cache/
+/.states/
+/src/main/resources/abi/

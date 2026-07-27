@@ -63,7 +63,7 @@ public class PlayAroundDemo {
 		propertySafe.addProperty(EXTERNAL_PROPERTY_ID, property.getContractAddress()).send();
 		LOGGER.info("successfully added property to the PropertySafe");
 
-		// getting the
+		// getting the value of the deployed property
 		BigInteger value = property.value().send();
 		LOGGER.info("value of deployed property: {}", value);
 

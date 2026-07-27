@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.RemoteFunctionCall;
 import org.web3j.tx.TransactionManager;
@@ -34,7 +35,7 @@ class PropertySafeServiceTest {
 	private ContractGasProvider contractGasProvider;
 
 	@Mock
-	private TransactionManager transactionManager;
+	private Credentials credentials;
 
 	@Mock
 	private PropertySafe propertySafe;
@@ -52,7 +53,7 @@ class PropertySafeServiceTest {
 			Property propertyMock = Mockito.mock(Property.class);
 			var deployPropertyCall = mock(RemoteFunctionCall.class);
 			property.when(
-					() -> Property.deploy(web3j, transactionManager, contractGasProvider, propertyName, BigInteger.valueOf(propertyValue)))
+					() -> Property.deploy(web3j, credentials, contractGasProvider, propertyName, BigInteger.valueOf(propertyValue)))
 				.thenReturn(deployPropertyCall);
 			when(deployPropertyCall.send()).thenReturn(propertyMock);
 
@@ -85,7 +86,7 @@ class PropertySafeServiceTest {
 		try (MockedStatic<Property> property = Mockito.mockStatic(Property.class)) {
 			var deployPropertyCall = mock(RemoteFunctionCall.class);
 			property.when(
-					() -> Property.deploy(web3j, transactionManager, contractGasProvider, propertyName, BigInteger.valueOf(propertyValue)))
+					() -> Property.deploy(web3j, credentials, contractGasProvider, propertyName, BigInteger.valueOf(propertyValue)))
 				.thenReturn(deployPropertyCall);
 			when(deployPropertyCall.send()).thenThrow(new Exception());
 
@@ -104,7 +105,7 @@ class PropertySafeServiceTest {
 			PropertySafe propertySafeMock = Mockito.mock(PropertySafe.class);
 			var deployPropertySafeCall = mock(RemoteFunctionCall.class);
 			safe.when(
-					() -> PropertySafe.deploy(web3j, transactionManager, contractGasProvider))
+					() -> PropertySafe.deploy(web3j, credentials, contractGasProvider))
 				.thenReturn(deployPropertySafeCall);
 			when(deployPropertySafeCall.send()).thenReturn(propertySafeMock);
 
@@ -121,7 +122,7 @@ class PropertySafeServiceTest {
 		try (MockedStatic<PropertySafe> safe = Mockito.mockStatic(PropertySafe.class)) {
 			var deployPropertySafeCall = mock(RemoteFunctionCall.class);
 			safe.when(
-					() -> PropertySafe.deploy(web3j, transactionManager, contractGasProvider))
+					() -> PropertySafe.deploy(web3j, credentials, contractGasProvider))
 				.thenReturn(deployPropertySafeCall);
 			when(deployPropertySafeCall.send()).thenThrow(new Exception());
 
@@ -144,13 +145,13 @@ class PropertySafeServiceTest {
 		try (MockedStatic<Property> property = Mockito.mockStatic(Property.class)) {
 			Property propertyMock = Mockito.mock(Property.class);
 			property.when(
-					() -> Property.load("0x01", web3j, transactionManager, contractGasProvider))
+					() -> Property.load("0x01", web3j, credentials, contractGasProvider))
 				.thenReturn(propertyMock);
 			property.when(
-					() -> Property.load("0x02", web3j, transactionManager, contractGasProvider))
+					() -> Property.load("0x02", web3j, credentials, contractGasProvider))
 				.thenReturn(propertyMock);
 			property.when(
-					() -> Property.load("0x03", web3j, transactionManager, contractGasProvider))
+					() -> Property.load("0x03", web3j, credentials, contractGasProvider))
 				.thenReturn(propertyMock);
 
 			var getPropertyIdCall = mock(RemoteFunctionCall.class);

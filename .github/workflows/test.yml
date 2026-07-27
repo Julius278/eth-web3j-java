@@ -3,15 +3,208 @@ name: web3j tests on plain ubuntu with java
 on: [ push ]
 
 jobs:
-  bCP1ld:
-    name: mvn build with Java 17, incl. unit tests
+  mvn_build_test:
+    name: Maven Build & Unit Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up Java
-        uses: actions/setup-java@v2
+      - uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
         with:
-          distribution: 'zulu'
-          java-version: 17
-      - name: build & test with Maven
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: Build & test with Maven
         run: mvn -B clean install
+
+  hardhat_deployment_test:
+    name: Hardhat Node & Contract Deployment
+    runs-on: ubuntu-latest
+    needs: mvn_build_test
+    steps:
+      - uses: actions/checkout@v7
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Start Hardhat node in background
+        run: |
+          npx hardhat node > hardhat.log 2>&1 &
+          echo $! > hardhat.pid
+          echo "Hardhat node started with PID $(cat hardhat.pid)"
+          sleep 5
+
+      - name: Wait for Hardhat node to be ready
+        run: |
+          echo "Waiting for Hardhat node to start..."
+          
+          for i in $(seq 1 60); do
+            response=$(curl -sS -X POST -H "Content-Type: application/json" \
+              --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
+              http://localhost:8545 2>/dev/null || echo '{}')
+
+            blockNumber=$(echo "$response" | grep -o '"result":"0x[0-9a-f]*"' || echo '')
+            
+            if [ -n "$blockNumber" ]; then
+              echo "✓ Hardhat node is ready"
+              sleep 1
+              exit 0
+            fi
+            
+            if [ $((i % 10)) -eq 0 ]; then
+              echo "Waiting for Hardhat... ($i/60)"
+            fi
+            sleep 1
+          done
+          
+          echo "✗ Hardhat node failed to start"
+          cat hardhat.log
+          exit 1
+
+      - name: Fund keyfile account with ETH (inline JSON-RPC)
+        run: |
+          FUNDER="0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"
+          TARGET="0x9f162b41fa8e44f885bedae410418145a4e8ed06"
+          VALUE="0x3635c9adc5dea00000"
+
+          echo "Funding ${TARGET} from ${FUNDER}"
+          curl -sS -X POST -H "Content-Type: application/json" \
+            --data "{\"jsonrpc\":\"2.0\",\"method\":\"eth_sendTransaction\",\"params\":[{\"from\":\"${FUNDER}\",\"to\":\"${TARGET}\",\"value\":\"${VALUE}\"}],\"id\":1}" \
+            http://localhost:8545
+
+          BALANCE=$(curl -sS -X POST -H "Content-Type: application/json" \
+            --data "{\"jsonrpc\":\"2.0\",\"method\":\"eth_getBalance\",\"params\":[\"${TARGET}\",\"latest\"],\"id\":2}" \
+            http://localhost:8545 | grep -o '"result":"0x[0-9a-fA-F]*"' || true)
+
+          if [ -z "$BALANCE" ] || [ "$BALANCE" = '"result":"0x0"' ]; then
+            echo "Failed to fund ${TARGET}"
+            cat hardhat.log
+            exit 1
+          fi
+
+      - name: Compile app for deployment demo
+        run: mvn -B -DskipTests compile
+
+      - name: Deploy Smart Contracts via PipelineLocalTestPrepDemo
+        run: mvn exec:java -Dexec.mainClass="com.julius.spring.boot.ethweb3.demo.PipelineLocalTestPrepDemo"
+
+      - name: Export deployed contract addresses as env variables
+        run: |
+          # Properties-Datei einlesen und als GitHub-Environment-Variablen exportieren
+          # Kommentarzeilen (#) und leere Zeilen überspringen
+          while IFS='=' read -r key value; do
+            [[ "$key" =~ ^#.*$ || -z "$key" ]] && continue
+            echo "$key=$value" >> $GITHUB_ENV
+            echo "Exported: $key=$value"
+          done < deployed-contracts.env
+
+      - name: Verify deployed contract addresses
+        run: |
+          echo "PropertySafe deployed at: $PROPERTY_SAFE_ADDRESS"
+          echo "Property deployed at:     $PROPERTY_ADDRESS"
+
+          # Sicherstellen, dass die Adressen nicht leer sind
+          if [ -z "$PROPERTY_SAFE_ADDRESS" ] || [ -z "$PROPERTY_ADDRESS" ]; then
+            echo "ERROR: Contract addresses are empty!"
+            exit 1
+          fi
+
+          # Beispiel: Prüfen ob der Contract-Code auf der Adresse existiert (eth_getCode)
+          CODE=$(curl -sS -X POST -H "Content-Type: application/json" \
+            --data "{\"jsonrpc\":\"2.0\",\"method\":\"eth_getCode\",\"params\":[\"${PROPERTY_SAFE_ADDRESS}\",\"latest\"],\"id\":1}" \
+            http://localhost:8545 | grep -o '"result":"0x[0-9a-fA-F]*"' || true)
+
+          echo "Contract code at PropertySafe address: $CODE"
+
+          if [ "$CODE" = '"result":"0x"' ] || [ -z "$CODE" ]; then
+            echo "ERROR: No contract code found at $PROPERTY_SAFE_ADDRESS"
+            exit 1
+          fi
+
+          echo "✓ Contract verification successful"
+
+      - name: start Spring Boot application with deployed contract addresses
+        run: |
+          mvn spring-boot:run \
+            -Dspring-boot.run.arguments="--web3.propertySafe.address=$PROPERTY_SAFE_ADDRESS --eth.node.address=http://localhost:8545 --web3.keyfile=./src/main/resources/keyfile.json --web3.keyfile.password=password" \
+            > spring-boot.log 2>&1 &
+          echo $! > spring-boot.pid
+          echo "Spring Boot started with PID $(cat spring-boot.pid)"
+
+      - name: wait for Spring Boot to be ready
+        run: |
+          echo "Waiting for Spring Boot startup..."
+
+          for i in $(seq 1 90); do
+            if grep -q 'Started .* in .* seconds' spring-boot.log 2>/dev/null; then
+              echo "✓ Spring Boot reported startup complete"
+              exit 0
+            fi
+
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8080 || true)
+            if [ "$STATUS" != "000" ]; then
+              echo "✓ Spring Boot is reachable on port 8080 (HTTP $STATUS)"
+              exit 0
+            fi
+
+            if [ $((i % 10)) -eq 0 ]; then
+              echo "Still waiting for Spring Boot... ($i/90)"
+            fi
+            sleep 2
+          done
+
+          echo "✗ Spring Boot did not become ready in time"
+          cat spring-boot.log || echo "No Spring Boot logs available"
+          exit 1
+
+      - name: install bruno cli
+        run: npm install -g @usebruno/cli && bru --version
+
+      - name: run bruno cli tests against application
+        working-directory: src/test/resources/bruno_collection
+        run: bru run .
+
+      - name: stop Spring Boot application
+        if: always()
+        run: |
+          if [ -f spring-boot.pid ]; then
+            kill $(cat spring-boot.pid) || echo "Failed to kill Spring Boot process"
+            rm spring-boot.pid
+          else
+            pkill -f 'mvn spring-boot:run' || echo "Spring Boot application not running"
+          fi
+
+      - name: Stop Hardhat node
+        if: always()
+        run: |
+          if [ -f hardhat.pid ]; then
+            kill $(cat hardhat.pid) || echo "Failed to kill Hardhat process"
+            rm hardhat.pid
+          fi
+
+      - name: Show Hardhat logs on failure
+        if: failure()
+        run: |
+          echo "=== Hardhat Node Logs ==="
+          cat hardhat.log || echo "No logs available"
+          echo ""
+          echo "=== Hardhat Process Info ==="
+          ps aux | grep hardhat || echo "Hardhat process not found"

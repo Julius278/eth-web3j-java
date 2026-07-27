@@ -67,19 +67,9 @@ public class Web3Config {
     }
 
     @Bean
-    public TransactionManager transactionManager(Web3j web3client, Credentials credentials) {
-		try {
-			return new RawTransactionManager(web3client, credentials, Long.parseLong(web3client.netVersion().send().getNetVersion()));
-		} catch (IOException e) {
-            logger.error("transactionManager initiate failed", e);
-			throw new RuntimeException("could not initiate transactionManager");
-		}
-	}
-
-    @Bean
-    public PropertySafe propertySafe(Web3j web3j, TransactionManager transactionManager, ContractGasProvider gasProvider){
+    public PropertySafe propertySafe(Web3j web3j, Credentials credentials, ContractGasProvider gasProvider){
         logger.info("load propertySafe from address: {}", propertySafeAddress);
-        return PropertySafe.load(propertySafeAddress, web3j, transactionManager, gasProvider);
+        return PropertySafe.load(propertySafeAddress, web3j, credentials, gasProvider);
     }
 
 }
