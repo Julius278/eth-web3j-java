@@ -13,7 +13,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 21
-          cache: 'maven'
 
       - name: Build & test with Maven
         run: mvn -B clean install
@@ -35,7 +34,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 21
-          cache: 'maven'
 
       - name: Install dependencies
         run: npm install
@@ -75,7 +73,14 @@ jobs:
           exit 1
 
       - name: Fund keyfile account with ETH
-        run: npx hardhat run scripts/setup-hardhat.js
+        run: |
+          echo "Funding the keyfile account..."
+          node scripts/setup-hardhat.js
+          if [ $? -ne 0 ]; then
+            echo "Failed to fund account!"
+            cat hardhat.log
+            exit 1
+          fi
 
       - name: Compile app for deployment demo
         run: mvn -B -DskipTests compile
