@@ -7,18 +7,18 @@ contract Property is IProperty {
 
     string internal id;
     string internal name;
-    int public value;
+    int256 public value;
 
-    constructor(string memory _name, int _value){
+    constructor(string memory _name, int256 _value){
         name = _name;
         value = _value;
     }
 
-    function setValue(int _value) public{
+    function setValue(int256 _value) public{
         value = _value;
     }
 
-    function getValue() public view returns (int) {
+    function getValue() public view returns (int256) {
         return value;
     }
 

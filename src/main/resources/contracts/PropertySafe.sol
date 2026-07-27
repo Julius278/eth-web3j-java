@@ -10,12 +10,12 @@ contract PropertySafe {
         _;
     }
 
-    int public value;
+    int256 public value;
     mapping(string => address) public propertyMap;
     address[] private propertyAddresses;
 
 
-    function createProperty(string memory _externalPropertyId, string memory _name, int _value) external {
+    function createProperty(string memory _externalPropertyId, string memory _name, int256 _value) external {
         require(propertyMap[_externalPropertyId] == address(0));
 
         Property property = new Property(_name, _value);

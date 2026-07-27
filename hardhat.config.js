@@ -9,6 +9,7 @@ module.exports = {
     hardhat: {
       chainId: 31337,
       allowUnlimitedContractSize: true,
+      hardfork: "london", // Ensure EVM compatibility
       accounts: {
         mnemonic: "test test test test test test test test test test test junk",
         path: "m/44'/60'/0'/0",
@@ -18,17 +19,14 @@ module.exports = {
     },
   },
   solidity: {
-    compilers: [
-      {
-        version: "0.8.15",
-        settings: {
-          optimizer: {
-            enabled: true,
-            runs: 200,
-          },
-        },
+    version: "0.8.15",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200,
       },
-    ],
+      evmVersion: "london", // Explicitly set EVM version
+    },
   },
   paths: {
     sources: "./src/main/resources/contracts",
@@ -37,7 +35,6 @@ module.exports = {
     artifacts: "./src/main/resources/artifacts",
   },
   mocha: {
-    // Maybe necessary when testing on-chain.
     timeout: 3000000,
   },
 };
