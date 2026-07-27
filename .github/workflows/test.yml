@@ -4,8 +4,17 @@ on: [ push ]
 
 jobs:
   bCP1ld:
-    name: mvn build with Java 17, incl. unit tests
+    name: mvn build with Java 17, incl. unit tests and contract deployment
     runs-on: ubuntu-latest
+    services:
+      besu:
+        image: hyperledger/besu:latest
+        options: >-
+          --network-alias besu
+        ports:
+          - 8545:8545
+        env:
+          BESU_NETWORK: dev
     steps:
       - uses: actions/checkout@v4
       - name: Set up Java
@@ -13,5 +22,24 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: 17
+
+      - name: Wait for Besu node to be ready
+        run: |
+          for i in {1..30}; do
+            if curl -s -X POST -H "Content-Type: application/json" \
+              --data '{"jsonrpc":"2.0","method":"eth_chainId","params":[],"id":1}' \
+              http://localhost:8545 | grep -q "result"; then
+              echo "Besu node is ready"
+              exit 0
+            fi
+            echo "Waiting for Besu node... ($i/30)"
+            sleep 2
+          done
+          echo "Besu node failed to start"
+          exit 1
+
       - name: build & test with Maven
         run: mvn -B clean install
+
+      - name: Deploy Smart Contracts via PipelineLocalTestPrepDemo
+        run: mvn exec:java -Dexec.mainClass="com.julius.spring.boot.ethweb3.demo.PipelineLocalTestPrepDemo"

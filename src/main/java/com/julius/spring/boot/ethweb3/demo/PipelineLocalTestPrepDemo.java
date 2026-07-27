@@ -18,28 +18,17 @@ import java.io.IOException;
 import java.math.BigInteger;
 
 @SuppressWarnings("java:S112")
-public class PlayAroundDemo {
+public class PipelineLocalTestPrepDemo {
 
-	public static final Logger LOGGER = LoggerFactory.getLogger(PlayAroundDemo.class);
+	public static final Logger LOGGER = LoggerFactory.getLogger(PipelineLocalTestPrepDemo.class);
 	public static final String KEY_FILE_PATH = "./src/main/resources/keyfile.json";
-	public static final String ETH_SERVER_ADDRESS = "https://ethereum-holesky-rpc.publicnode.com";
-	private static final String SAFE_CONTRACT_ADDRESS = "0x3be21b25ef8eca53b3de604a4a57e46569cc2e49";
+	public static final String ETH_SERVER_ADDRESS = "http://localhost:8545";
 
-	// only change these three
-	public static final String EXTERNAL_PROPERTY_ID = "<PLACE_YOUR_ID_HERE>";
-	private static final String PROPERTY_NAME = "<PLACE_A_NAME_HERE>";
+	public static final String EXTERNAL_PROPERTY_ID = "dummy-external-property-id";
+	private static final String PROPERTY_NAME = "dummy-property-name";
 	public static final int PROPERTY_VALUE = 100;
 
-	/**
-	 *
-	 * Hi, this is the demo I mentioned in the README.
-	 * You can test everything you want in the main method, the others are there for setup reasons
-	 * -
-	 * Everything is prepared, you can just start by choosing your PropertyName and ID (uniqueness is checked on the PropertySafe)
-	 * After you chose your values, you can test the main method or extend it as needed
-	 *
-	 * @param args dont worry about that ;)
-	 */
+
 	public static void main(String[] args) throws Exception {
 
 		// setup for general node query
@@ -53,8 +42,9 @@ public class PlayAroundDemo {
 		final ContractGasProvider gasProvider = new DefaultGasProvider();
 
 		// load the PropertySafe with the given address (pre-deployed)
-		PropertySafe propertySafe = PropertySafe.load(SAFE_CONTRACT_ADDRESS, web3jConnection, manager, gasProvider);
-		LOGGER.info("deployPropertyToSafe for id: {}", EXTERNAL_PROPERTY_ID);
+		PropertySafe propertySafe = PropertySafe.deploy( web3jConnection, manager, gasProvider).send();
+		LOGGER.info("property deployed on address: {}", propertySafe.getContractAddress());
+		LOGGER.info("deployPropertyToSafe for id: {} on propertySafe: {}", EXTERNAL_PROPERTY_ID, propertySafe.getContractAddress());
 
 		// deploy a new Property and add it to the PropertySafe
 		Property property = Property.deploy(web3jConnection, manager, gasProvider, PROPERTY_NAME, BigInteger.valueOf(PROPERTY_VALUE)).send();
@@ -62,11 +52,6 @@ public class PlayAroundDemo {
 		LOGGER.info("contractAddress of deployed property: {}", property.getContractAddress());
 		propertySafe.addProperty(EXTERNAL_PROPERTY_ID, property.getContractAddress()).send();
 		LOGGER.info("successfully added property to the PropertySafe");
-
-		// getting the value of the deployed property
-		BigInteger value = property.value().send();
-		LOGGER.info("value of deployed property: {}", value);
-
 	}
 
 	public static Credentials loadCredentials(String keyFilePath) {
