@@ -10,11 +10,15 @@ jobs:
       besu:
         image: hyperledger/besu:latest
         options: >-
-          --network=dev
+          --network-alias besu
         ports:
           - 8545:8545
         env:
           BESU_NETWORK: dev
+          BESU_RPC_HTTP_ENABLED: "true"
+          BESU_RPC_HTTP_HOST: 0.0.0.0
+          BESU_RPC_HTTP_API: ETH,NET,WEB3
+          BESU_HOST_ALLOWLIST: "*"
     steps:
       - uses: actions/checkout@v4
       - name: Set up Java
@@ -25,14 +29,17 @@ jobs:
 
       - name: Wait for Besu node to be ready
         run: |
-          for i in {1..30}; do
-            if curl -s -X POST -H "Content-Type: application/json" \
+          for i in $(seq 1 60); do
+            response=$(curl -sS -X POST -H "Content-Type: application/json" \
               --data '{"jsonrpc":"2.0","method":"eth_chainId","params":[],"id":1}' \
-              http://localhost:8545 | grep -q "result"; then
+              http://localhost:8545 || true)
+
+            if echo "$response" | grep -q '"result"'; then
               echo "Besu node is ready"
               exit 0
             fi
-            echo "Waiting for Besu node... ($i/30)"
+            echo "Waiting for Besu node... ($i/60)"
+            echo "Last response: $response"
             sleep 2
           done
           echo "Besu node failed to start"
@@ -43,3 +50,8 @@ jobs:
 
       - name: Deploy Smart Contracts via PipelineLocalTestPrepDemo
         run: mvn exec:java -Dexec.mainClass="com.julius.spring.boot.ethweb3.demo.PipelineLocalTestPrepDemo"
+
+      - name: Dump Besu logs on failure
+        if: failure()
+        run: docker logs ${{ job.services.besu.id }}
+
