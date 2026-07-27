@@ -7,9 +7,9 @@ jobs:
     name: Maven Build & Unit Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Set up Java
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: 21
@@ -31,13 +31,15 @@ jobs:
         env:
           BESU_NETWORK: dev
           BESU_RPC_HTTP_ENABLED: "true"
+          BESU_MINER_ENABLED: "true"
+          BESU_MINER_COINBASE: "0x9f162b41fa8e44f885bedae410418145a4e8ed06"
           BESU_RPC_HTTP_HOST: 0.0.0.0
           BESU_RPC_HTTP_API: ETH,NET,WEB3
           BESU_HOST_ALLOWLIST: "*"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Set up Java
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: 21

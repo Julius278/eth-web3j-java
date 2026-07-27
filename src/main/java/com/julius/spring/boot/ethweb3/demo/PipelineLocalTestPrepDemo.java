@@ -9,8 +9,6 @@ import org.web3j.crypto.WalletUtils;
 import org.web3j.crypto.exception.CipherException;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.http.HttpService;
-import org.web3j.tx.RawTransactionManager;
-import org.web3j.tx.TransactionManager;
 import org.web3j.tx.gas.ContractGasProvider;
 import org.web3j.tx.gas.DefaultGasProvider;
 
@@ -38,16 +36,15 @@ public class PipelineLocalTestPrepDemo {
 
 		// setup for sending transactions
 		final Credentials credentials = loadCredentials(KEY_FILE_PATH);
-		final TransactionManager manager = createTransactionManager(web3jConnection, credentials);
 		final ContractGasProvider gasProvider = new DefaultGasProvider();
 
 		// load the PropertySafe with the given address (pre-deployed)
-		PropertySafe propertySafe = PropertySafe.deploy( web3jConnection, manager, gasProvider).send();
+		PropertySafe propertySafe = PropertySafe.deploy( web3jConnection, credentials, gasProvider).send();
 		LOGGER.info("property deployed on address: {}", propertySafe.getContractAddress());
 		LOGGER.info("deployPropertyToSafe for id: {} on propertySafe: {}", EXTERNAL_PROPERTY_ID, propertySafe.getContractAddress());
 
 		// deploy a new Property and add it to the PropertySafe
-		Property property = Property.deploy(web3jConnection, manager, gasProvider, PROPERTY_NAME, BigInteger.valueOf(PROPERTY_VALUE)).send();
+		Property property = Property.deploy(web3jConnection, credentials, gasProvider, PROPERTY_NAME, BigInteger.valueOf(PROPERTY_VALUE)).send();
 		property.setPropertyId(EXTERNAL_PROPERTY_ID).send();
 		LOGGER.info("contractAddress of deployed property: {}", property.getContractAddress());
 		propertySafe.addProperty(EXTERNAL_PROPERTY_ID, property.getContractAddress()).send();
@@ -69,14 +66,5 @@ public class PipelineLocalTestPrepDemo {
 	public static Web3j web3jClient() {
 		LOGGER.info("ethereum test node: {}", ETH_SERVER_ADDRESS);
 		return Web3j.build(new HttpService(ETH_SERVER_ADDRESS));
-	}
-
-	public static TransactionManager createTransactionManager(Web3j web3client, Credentials credentials) {
-		try {
-			return new RawTransactionManager(web3client, credentials, Long.parseLong(web3client.netVersion().send().getNetVersion()));
-		} catch (IOException e) {
-			LOGGER.error("transactionManager initiate failed", e);
-			throw new RuntimeException("could not initiate transactionManager");
-		}
 	}
 }
