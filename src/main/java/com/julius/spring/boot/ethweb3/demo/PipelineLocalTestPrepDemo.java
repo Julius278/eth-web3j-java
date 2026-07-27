@@ -12,8 +12,10 @@ import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.gas.ContractGasProvider;
 import org.web3j.tx.gas.StaticGasProvider;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.Properties;
 
 @SuppressWarnings("java:S112")
 public class PipelineLocalTestPrepDemo {
@@ -25,7 +27,9 @@ public class PipelineLocalTestPrepDemo {
 	public static final String EXTERNAL_PROPERTY_ID = "dummy-external-property-id";
 	private static final String PROPERTY_NAME = "dummy-property-name";
 	public static final int PROPERTY_VALUE = 100;
-	
+	// used for GitHub Pipeline environment export
+	public static final String DEPLOYED_CONTRACTS_FILE = "deployed-contracts.env";
+
 	// Gas parameters optimized for Besu dev mode
 	private static final BigInteger GAS_PRICE = BigInteger.valueOf(1_000_000_000L); // 1 Gwei
 	private static final BigInteger GAS_LIMIT = BigInteger.valueOf(3_000_000L); // 3 Million gas
@@ -61,6 +65,35 @@ public class PipelineLocalTestPrepDemo {
 		LOGGER.info("Adding property to PropertySafe...");
 		propertySafe.addProperty(EXTERNAL_PROPERTY_ID, property.getContractAddress()).send();
 		LOGGER.info("successfully added property to the PropertySafe");
+
+		// Vertragsadressen in Datei schreiben, damit Folge-Steps in der Pipeline sie nutzen können
+		saveDeployedContracts(propertySafe.getContractAddress(), property.getContractAddress());
+	}
+
+
+	/**
+	 * Persists the deployed contract addresses to a properties file ({@value #DEPLOYED_CONTRACTS_FILE}).
+	 * <p>
+	 * Intended for use in CI/CD pipelines: after this method completes, a subsequent pipeline step
+	 * can read the file and export the addresses as environment variables (e.g. via {@code $GITHUB_ENV}),
+	 * making them available to all following steps for further verification or integration tests.
+	 *
+	 * @param propertySafeAddress the on-chain address of the deployed {@code PropertySafe} contract
+	 * @param propertyAddress     the on-chain address of the deployed {@code Property} contract
+	 * @throws IOException if the file cannot be written
+	 */
+	public static void saveDeployedContracts(String propertySafeAddress, String propertyAddress) throws IOException {
+		Properties props = new Properties();
+		props.setProperty("PROPERTY_SAFE_ADDRESS", propertySafeAddress);
+		props.setProperty("PROPERTY_ADDRESS", propertyAddress);
+
+		try (FileWriter writer = new FileWriter(DEPLOYED_CONTRACTS_FILE)) {
+			props.store(writer, "Deployed contract addresses");
+		}
+
+		LOGGER.info("Contract addresses saved to {}", DEPLOYED_CONTRACTS_FILE);
+		LOGGER.info("  PROPERTY_SAFE_ADDRESS={}", propertySafeAddress);
+		LOGGER.info("  PROPERTY_ADDRESS={}", propertyAddress);
 	}
 
 	public static Credentials loadCredentials(String keyFilePath) {

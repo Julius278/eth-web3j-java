@@ -106,6 +106,41 @@ jobs:
       - name: Deploy Smart Contracts via PipelineLocalTestPrepDemo
         run: mvn exec:java -Dexec.mainClass="com.julius.spring.boot.ethweb3.demo.PipelineLocalTestPrepDemo"
 
+      - name: Export deployed contract addresses as env variables
+        run: |
+          # Properties-Datei einlesen und als GitHub-Environment-Variablen exportieren
+          # Kommentarzeilen (#) und leere Zeilen überspringen
+          while IFS='=' read -r key value; do
+            [[ "$key" =~ ^#.*$ || -z "$key" ]] && continue
+            echo "$key=$value" >> $GITHUB_ENV
+            echo "Exported: $key=$value"
+          done < deployed-contracts.env
+
+      - name: Verify deployed contract addresses
+        run: |
+          echo "PropertySafe deployed at: $PROPERTY_SAFE_ADDRESS"
+          echo "Property deployed at:     $PROPERTY_ADDRESS"
+
+          # Sicherstellen, dass die Adressen nicht leer sind
+          if [ -z "$PROPERTY_SAFE_ADDRESS" ] || [ -z "$PROPERTY_ADDRESS" ]; then
+            echo "ERROR: Contract addresses are empty!"
+            exit 1
+          fi
+
+          # Beispiel: Prüfen ob der Contract-Code auf der Adresse existiert (eth_getCode)
+          CODE=$(curl -sS -X POST -H "Content-Type: application/json" \
+            --data "{\"jsonrpc\":\"2.0\",\"method\":\"eth_getCode\",\"params\":[\"${PROPERTY_SAFE_ADDRESS}\",\"latest\"],\"id\":1}" \
+            http://localhost:8545 | grep -o '"result":"0x[0-9a-fA-F]*"' || true)
+
+          echo "Contract code at PropertySafe address: $CODE"
+
+          if [ "$CODE" = '"result":"0x"' ] || [ -z "$CODE" ]; then
+            echo "ERROR: No contract code found at $PROPERTY_SAFE_ADDRESS"
+            exit 1
+          fi
+
+          echo "✓ Contract verification successful"
+
       - name: Show Hardhat logs on failure
         if: failure()
         run: |
