@@ -10,7 +10,7 @@ jobs:
       besu:
         image: hyperledger/besu:latest
         options: >-
-          --network-alias besu
+          --network=dev
         ports:
           - 8545:8545
         env:
