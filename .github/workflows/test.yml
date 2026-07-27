@@ -141,6 +141,30 @@ jobs:
 
           echo "✓ Contract verification successful"
 
+      - name: start Spring Boot application with deployed contract addresses
+        run: |
+          mvn spring-boot:run \
+            -Dspring-boot.run.arguments="--web3.propertySafe.address=$PROPERTY_SAFE_ADDRESS --eth.node.address=http://localhost:8545" &
+
+      - name: install bruno cli
+        run: npm install -g @usebruno/cli && bru --version
+
+      - name: run bruno cli tests against application
+        run: bru run src/test/resources/bruno_collection/Property-Safe-Collection.json
+
+      - name: stop Spring Boot application
+        if: always()
+        run: |
+          pkill -f 'mvn spring-boot:run' || echo "Spring Boot application not running"
+
+      - name: Stop Hardhat node
+        if: always()
+        run: |
+          if [ -f hardhat.pid ]; then
+            kill $(cat hardhat.pid) || echo "Failed to kill Hardhat process"
+            rm hardhat.pid
+          fi
+
       - name: Show Hardhat logs on failure
         if: failure()
         run: |
@@ -149,4 +173,3 @@ jobs:
           echo ""
           echo "=== Hardhat Process Info ==="
           ps aux | grep hardhat || echo "Hardhat process not found"
-
