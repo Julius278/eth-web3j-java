@@ -6,7 +6,7 @@ const fs = require("fs");
 const path = require("path");
 
 function updateBinaries() {
-  const artifactsDir = "src/main/resources/artifacts/contracts";
+  const artifactsDir = "src/main/resources/artifacts";
   const generatedSourcesDir = "target/generated-sources/contracts/com/julius/spring/boot/ethweb3";
 
   console.log("=== Updating Java Wrapper Bytecodes ===\n");
@@ -19,8 +19,6 @@ function updateBinaries() {
   }
 
   function getContractBytecode(contractName) {
-    const searchPath = path.join(artifactsDir, "**", `${contractName}.json`);
-
     function findArtifact(dir) {
       try {
         const files = fs.readdirSync(dir);
@@ -32,6 +30,10 @@ function updateBinaries() {
             const result = findArtifact(filePath);
             if (result) return result;
           } else if (file === `${contractName}.json`) {
+            const normalized = filePath.replace(/\\/g, "/");
+            if (normalized.includes("/build-info/") || normalized.endsWith(".dbg.json")) {
+              continue;
+            }
             const content = fs.readFileSync(filePath, "utf8");
             const artifact = JSON.parse(content);
             return artifact.bytecode || null;

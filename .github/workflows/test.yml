@@ -26,6 +26,9 @@ jobs:
       - name: Compile Hardhat contracts
         run: npx hardhat compile --force
 
+      - name: Check compiled bytecodes
+        run: node scripts/check-bytecodes.js
+
       - name: Extract ABIs for web3j
         run: node scripts/extract-abis.js
 
@@ -55,6 +58,9 @@ jobs:
 
       - name: Compile Hardhat contracts
         run: npx hardhat compile --force
+
+      - name: Check compiled bytecodes
+        run: node scripts/check-bytecodes.js
 
       - name: Start Hardhat node in background
         run: |
@@ -101,6 +107,12 @@ jobs:
           fi
 
       - name: Compile app for deployment demo
+        run: mvn -B -DskipTests compile
+
+      - name: Update Java wrapper bytecodes
+        run: node scripts/update-java-binaries.js
+
+      - name: Recompile app with updated wrappers
         run: mvn -B -DskipTests compile
 
       - name: Deploy Smart Contracts via PipelineLocalTestPrepDemo

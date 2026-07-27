@@ -6,7 +6,7 @@ const fs = require("fs");
 const path = require("path");
 
 function checkBytecodes() {
-  const artifactsDir = "src/main/resources/artifacts/contracts";
+  const artifactsDir = "src/main/resources/artifacts";
 
   console.log("=== Contract Bytecode Verification ===\n");
 
@@ -29,7 +29,10 @@ function checkBytecodes() {
     return results;
   }
 
-  const artifactFiles = walkDir(artifactsDir);
+  const artifactFiles = walkDir(artifactsDir).filter((artifactPath) => {
+    const normalized = artifactPath.replace(/\\/g, "/");
+    return !normalized.includes("/build-info/") && !normalized.endsWith(".dbg.json");
+  });
 
   for (const artifactPath of artifactFiles) {
     try {

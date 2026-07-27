@@ -6,7 +6,7 @@ const fs = require("fs");
 const path = require("path");
 
 function extractAbis() {
-  const artifactsDir = "src/main/resources/artifacts/contracts";
+  const artifactsDir = "src/main/resources/artifacts";
   const abiOutDir = "src/main/resources/abi";
 
   // Create ABI directory if it doesn't exist
@@ -39,7 +39,11 @@ function extractAbis() {
     return results;
   }
 
-  const artifactFiles = walkDir(artifactsDir);
+  const artifactFiles = walkDir(artifactsDir).filter((artifactPath) => {
+    const normalized = artifactPath.replace(/\\/g, "/");
+    // Skip metadata/build-info files; keep real contract artifacts only
+    return !normalized.includes("/build-info/") && !normalized.endsWith(".dbg.json");
+  });
 
   if (artifactFiles.length === 0) {
     console.log("⚠ No artifacts found. Make sure to run: npx hardhat compile");
