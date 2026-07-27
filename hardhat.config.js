@@ -19,14 +19,28 @@ module.exports = {
     },
   },
   solidity: {
-    version: "0.8.15",
-    settings: {
-      optimizer: {
-        enabled: true,
-        runs: 200,
+    compilers: [
+      {
+        version: "0.8.15",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+          evmVersion: "istanbul",
+        },
       },
-      evmVersion: "cancun", // Match runtime hardfork to avoid opcode mismatch
-    },
+      {
+        version: "0.8.20",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+          evmVersion: "istanbul",
+        },
+      },
+    ],
   },
   paths: {
     sources: "./src/main/resources/contracts",
