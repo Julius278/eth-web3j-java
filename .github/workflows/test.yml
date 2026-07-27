@@ -144,7 +144,7 @@ jobs:
       - name: start Spring Boot application with deployed contract addresses
         run: |
           mvn spring-boot:run \
-            -Dspring-boot.run.arguments="--web3.propertySafe.address=$PROPERTY_SAFE_ADDRESS --eth.node.address=http://localhost:8545" \
+            -Dspring-boot.run.arguments="--web3.propertySafe.address=$PROPERTY_SAFE_ADDRESS --eth.node.address=http://localhost:8545 --web3.keyfile=./src/main/resources/keyfile.json --web3.keyfile.password=password" \
             > spring-boot.log 2>&1 &
           echo $! > spring-boot.pid
           echo "Spring Boot started with PID $(cat spring-boot.pid)"
@@ -179,7 +179,8 @@ jobs:
         run: npm install -g @usebruno/cli && bru --version
 
       - name: run bruno cli tests against application
-        run: bru run src/test/resources/bruno_collection/Property-Safe-Collection.json
+        working-directory: src/test/resources/bruno_collection
+        run: bru run .
 
       - name: stop Spring Boot application
         if: always()
