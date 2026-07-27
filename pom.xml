@@ -170,9 +170,9 @@
 					<packageName>com.julius.spring.boot.ethweb3</packageName>
 					<sourceDestination>${basedir}/target/generated-sources/contracts</sourceDestination>
 					<abiSourceFiles>
-						<directory>${basedir}/src/main/resources/abi</directory>
+						<directory>${basedir}/src/main/resources/abi-disabled</directory>
 						<includes>
-							<include>**/*.json</include>
+							<include>**/*.abiignore</include>
 						</includes>
 					</abiSourceFiles>
 					<soliditySourceFiles>

@@ -8,29 +8,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - name: Set up Node.js
-        uses: actions/setup-node@v7
-        with:
-          node-version: '22'
-          cache: 'npm'
 
       - name: Set up Java
         uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: 21
-
-      - name: Install npm dependencies
-        run: npm install
-
-      - name: Compile Hardhat contracts
-        run: npx hardhat compile --force
-
-      - name: Check compiled bytecodes
-        run: node scripts/check-bytecodes.js
-
-      - name: Extract ABIs for web3j
-        run: node scripts/extract-abis.js
 
       - name: Build & test with Maven
         run: mvn -B clean install
@@ -55,12 +38,6 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-
-      - name: Compile Hardhat contracts
-        run: npx hardhat compile --force
-
-      - name: Check compiled bytecodes
-        run: node scripts/check-bytecodes.js
 
       - name: Start Hardhat node in background
         run: |
@@ -96,23 +73,28 @@ jobs:
           cat hardhat.log
           exit 1
 
-      - name: Fund keyfile account with ETH
+      - name: Fund keyfile account with ETH (inline JSON-RPC)
         run: |
-          echo "Funding the keyfile account..."
-          node scripts/setup-hardhat.js
-          if [ $? -ne 0 ]; then
-            echo "Failed to fund account!"
+          FUNDER="0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"
+          TARGET="0x9f162b41fa8e44f885bedae410418145a4e8ed06"
+          VALUE="0x3635c9adc5dea00000"
+
+          echo "Funding ${TARGET} from ${FUNDER}"
+          curl -sS -X POST -H "Content-Type: application/json" \
+            --data "{\"jsonrpc\":\"2.0\",\"method\":\"eth_sendTransaction\",\"params\":[{\"from\":\"${FUNDER}\",\"to\":\"${TARGET}\",\"value\":\"${VALUE}\"}],\"id\":1}" \
+            http://localhost:8545
+
+          BALANCE=$(curl -sS -X POST -H "Content-Type: application/json" \
+            --data "{\"jsonrpc\":\"2.0\",\"method\":\"eth_getBalance\",\"params\":[\"${TARGET}\",\"latest\"],\"id\":2}" \
+            http://localhost:8545 | grep -o '"result":"0x[0-9a-fA-F]*"' || true)
+
+          if [ -z "$BALANCE" ] || [ "$BALANCE" = '"result":"0x0"' ]; then
+            echo "Failed to fund ${TARGET}"
             cat hardhat.log
             exit 1
           fi
 
       - name: Compile app for deployment demo
-        run: mvn -B -DskipTests compile
-
-      - name: Update Java wrapper bytecodes
-        run: node scripts/update-java-binaries.js
-
-      - name: Recompile app with updated wrappers
         run: mvn -B -DskipTests compile
 
       - name: Deploy Smart Contracts via PipelineLocalTestPrepDemo
