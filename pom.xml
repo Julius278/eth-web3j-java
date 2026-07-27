@@ -16,8 +16,11 @@
 
 	<properties>
 		<java.version>21</java.version>
-		<web3j-maven-plugin.version>4.14.0</web3j-maven-plugin.version>
-		<web3j-core.version>4.14.0</web3j-core.version>
+		<web3j-maven-plugin.version>5.0.2</web3j-maven-plugin.version>
+		<web3j-core.version>5.0.3</web3j-core.version>
+		<!-- Solidity compiler version - update this if Solidity version changes -->
+		<!-- Use format: 0.8.15, 0.8.20, etc. The web3j plugin will use the available compiler -->
+		<solidity.compiler.version>0.8.15</solidity.compiler.version>
 	</properties>
 
 	<dependencies>
@@ -59,6 +62,8 @@
 
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>3.5.0</version>
 				<dependencies>
 					<dependency>
 						<groupId>org.web3j</groupId>
@@ -66,8 +71,6 @@
 						<version>0.7.0</version>
 					</dependency>
 				</dependencies>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>3.5.0</version>
 				<executions>
 					<execution>
 						<id>npm-install</id>
@@ -97,40 +100,44 @@
 			</plugin>
 
 
-			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>3.3.1</version>
-				<executions>
-					<execution>
-						<id>copy-contracts-to-target-contracts</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${basedir}/target/contracts</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${basedir}/node_modules/</directory>
-									<includes>
-										<include>@openzeppelin/contracts/token/ERC20/*.sol</include>
-										<include>@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol</include>
-										<include>@openzeppelin/contracts/utils/Context.sol</include>
-										<include>@openzeppelin/contracts/interfaces/draft-IERC6093.sol</include>
-										<include>hardhat/console.sol</include>
-									</includes>
-								</resource>
-								<resource>
-									<directory>${basedir}/src/main/resources/contracts/</directory>
-									<includes>
-										<include>*.sol</include>
-									</includes>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+		<plugin>
+			<artifactId>maven-resources-plugin</artifactId>
+			<version>3.3.1</version>
+			<configuration>
+				<encoding>UTF-8</encoding>
+			</configuration>
+			<executions>
+				<execution>
+					<id>copy-contracts-to-target-contracts</id>
+					<phase>generate-sources</phase>
+					<goals>
+						<goal>copy-resources</goal>
+					</goals>
+					<configuration>
+						<encoding>UTF-8</encoding>
+						<outputDirectory>${basedir}/target/contracts</outputDirectory>
+						<resources>
+							<resource>
+								<directory>${basedir}/node_modules/</directory>
+								<includes>
+									<include>@openzeppelin/contracts/token/ERC20/*.sol</include>
+									<include>@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol</include>
+									<include>@openzeppelin/contracts/utils/Context.sol</include>
+									<include>@openzeppelin/contracts/interfaces/draft-IERC6093.sol</include>
+									<include>hardhat/console.sol</include>
+								</includes>
+							</resource>
+							<resource>
+								<directory>${basedir}/src/main/resources/contracts/</directory>
+								<includes>
+									<include>*.sol</include>
+								</includes>
+							</resource>
+						</resources>
+					</configuration>
+				</execution>
+			</executions>
+		</plugin>
 
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -144,8 +151,6 @@
 					</excludes>
 				</configuration>
 			</plugin>
-
-			<!-- added to create Solidity java wrapper classes -->
 			<plugin>
 				<groupId>org.web3j</groupId>
 				<artifactId>web3j-maven-plugin</artifactId>
@@ -189,6 +194,33 @@
 						<pathPrefix>hardhat=./hardhat</pathPrefix>
 					</pathPrefixes>
 				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>3.2.0</version>
+				<executions>
+					<execution>
+						<id>normalize-solidity-pragmas</id>
+						<!-- Runs after maven-resources:copy-resources (generate-sources), before web3j (generate-resources) -->
+						<phase>process-sources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<replace
+										dir="${project.build.directory}/contracts"
+										encoding="UTF-8"
+										token="pragma solidity ${solidity.compiler.version};"
+										value="pragma solidity &gt;=${solidity.compiler.version} &lt;0.9.0;">
+									<include name="**/*.sol"/>
+								</replace>
+							</target>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 
 			<!-- added to add the generated solidity java wrapper sources to /target/ folder -->
