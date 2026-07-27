@@ -144,7 +144,36 @@ jobs:
       - name: start Spring Boot application with deployed contract addresses
         run: |
           mvn spring-boot:run \
-            -Dspring-boot.run.arguments="--web3.propertySafe.address=$PROPERTY_SAFE_ADDRESS --eth.node.address=http://localhost:8545" &
+            -Dspring-boot.run.arguments="--web3.propertySafe.address=$PROPERTY_SAFE_ADDRESS --eth.node.address=http://localhost:8545" \
+            > spring-boot.log 2>&1 &
+          echo $! > spring-boot.pid
+          echo "Spring Boot started with PID $(cat spring-boot.pid)"
+
+      - name: wait for Spring Boot to be ready
+        run: |
+          echo "Waiting for Spring Boot startup..."
+
+          for i in $(seq 1 90); do
+            if grep -q 'Started .* in .* seconds' spring-boot.log 2>/dev/null; then
+              echo "✓ Spring Boot reported startup complete"
+              exit 0
+            fi
+
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8080 || true)
+            if [ "$STATUS" != "000" ]; then
+              echo "✓ Spring Boot is reachable on port 8080 (HTTP $STATUS)"
+              exit 0
+            fi
+
+            if [ $((i % 10)) -eq 0 ]; then
+              echo "Still waiting for Spring Boot... ($i/90)"
+            fi
+            sleep 2
+          done
+
+          echo "✗ Spring Boot did not become ready in time"
+          cat spring-boot.log || echo "No Spring Boot logs available"
+          exit 1
 
       - name: install bruno cli
         run: npm install -g @usebruno/cli && bru --version
@@ -155,7 +184,12 @@ jobs:
       - name: stop Spring Boot application
         if: always()
         run: |
-          pkill -f 'mvn spring-boot:run' || echo "Spring Boot application not running"
+          if [ -f spring-boot.pid ]; then
+            kill $(cat spring-boot.pid) || echo "Failed to kill Spring Boot process"
+            rm spring-boot.pid
+          else
+            pkill -f 'mvn spring-boot:run' || echo "Spring Boot application not running"
+          fi
 
       - name: Stop Hardhat node
         if: always()
