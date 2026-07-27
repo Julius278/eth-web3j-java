@@ -3,9 +3,24 @@ name: web3j tests on plain ubuntu with java
 on: [ push ]
 
 jobs:
-  bCP1ld:
-    name: mvn build with Java 17, incl. unit tests and contract deployment
+  mvn_build_test:
+    name: Maven Build & Unit Tests
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: 21
+
+      - name: Build & test with Maven
+        run: mvn -B clean install
+
+  besu_deployment_test:
+    name: Besu Node & Contract Deployment
+    runs-on: ubuntu-latest
+    needs: mvn_build_test
     services:
       besu:
         image: hyperledger/besu:latest
@@ -25,7 +40,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'zulu'
-          java-version: 17
+          java-version: 21
 
       - name: Wait for Besu node to be ready
         run: |
@@ -45,8 +60,8 @@ jobs:
           echo "Besu node failed to start"
           exit 1
 
-      - name: build & test with Maven
-        run: mvn -B clean install
+      - name: Compile app for deployment demo
+        run: mvn -B -DskipTests compile
 
       - name: Deploy Smart Contracts via PipelineLocalTestPrepDemo
         run: mvn exec:java -Dexec.mainClass="com.julius.spring.boot.ethweb3.demo.PipelineLocalTestPrepDemo"
