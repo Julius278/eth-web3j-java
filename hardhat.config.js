@@ -1,12 +1,12 @@
-require("@nomiclabs/hardhat-ethers");
-require("@nomicfoundation/hardhat-chai-matchers");
-require("solidity-coverage");
-require("hardhat-contract-sizer");
+import hardhatToolboxMochaEthersPlugin from "@nomicfoundation/hardhat-toolbox-mocha-ethers";
+import { defineConfig } from "hardhat/config";
 
-module.exports = {
+export default defineConfig({
+  plugins: [hardhatToolboxMochaEthersPlugin],
   defaultNetwork: "hardhat",
   networks: {
     hardhat: {
+      type: "edr-simulated",
       chainId: 31337,
       allowUnlimitedContractSize: true,
       hardfork: "cancun", // Supports opcodes emitted by newer Solidity compilers
@@ -51,7 +51,7 @@ module.exports = {
   mocha: {
     timeout: 3000000,
   },
-};
+});
 
 
 

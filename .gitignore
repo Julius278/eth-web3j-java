@@ -35,5 +35,8 @@ build/
 /node_modules/
 /src/main/resources/artifacts/
 /src/main/resources/cache/
+/states/
 /.states/
 /src/main/resources/abi/
+/types/
+/.agents/skills/migrate-hardhat2-to-hardhat3/
