@@ -12,14 +12,17 @@
     "url": "https://github.com/Julius278/eth-web3j-java.git"
   },
   "private": true,
+  "type": "module",
   "devDependencies": {
-    "@nomicfoundation/hardhat-chai-matchers": "1.0.4",
-    "@nomiclabs/hardhat-ethers": "2.2.3",
+    "@nomicfoundation/hardhat-ethers": "4.0.15",
+    "@nomicfoundation/hardhat-ethers-chai-matchers": "^3.0.11",
+    "@nomicfoundation/hardhat-mocha": "3.0.21",
+    "@nomicfoundation/hardhat-toolbox-mocha-ethers": "^3.0.7",
+    "chai": "^6.2.2",
     "eth-crypto": "2.7.0",
     "ethereumjs-wallet": "1.0.2",
-    "ethers": "5.0.0",
-    "hardhat": "2.22.10",
-    "hardhat-contract-sizer": "2.10.1"
+    "ethers": "6.17.0",
+    "hardhat": "3.11.1"
   },
   "dependencies": {
     "@openzeppelin/contracts": "4.7.3",
@@ -27,7 +30,6 @@
     "eth-web3j-java": "file:",
     "node-forge": "^1.4.0",
     "solc": "^0.8.15",
-    "solidity-coverage": "0.8.17",
     "test-unit": "0.1.0",
     "web3": "^4.16.0",
     "web3-eth-contract": "^4.7.2"
