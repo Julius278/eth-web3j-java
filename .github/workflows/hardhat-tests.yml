@@ -1,0 +1,26 @@
+name: Hardhat Tests
+
+on: [ push, pull_request ]
+
+jobs:
+  hardhat_tests:
+    name: Hardhat Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Hardhat tests
+        run: npx hardhat test
+
+      - name: Compile contracts
+        run: npx hardhat compile
+
